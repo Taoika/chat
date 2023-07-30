@@ -1,0 +1,28 @@
+.OtherSay {
+    justify-content: flex-start;
+
+    .avatar {
+        margin-right: 15px;
+    }
+
+    .bubble {
+        background-color: rgba(234, 234, 234);
+
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 0px;
+            left: -10px;
+            width: 0px;
+            height: 0px;
+            border-top: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 30px solid rgb(234, 234, 234);
+            border-left: 15px solid transparent;
+        }
+    }
+
+    .userName {
+        text-align: start;
+    }
+}

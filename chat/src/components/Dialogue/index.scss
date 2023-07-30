@@ -1,0 +1,24 @@
+.Dialogue {
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    height: 100%;
+    padding: 15px;
+    border-radius: 0 20px 20px 0;
+    box-sizing: border-box;
+    background-color: #FFF;   
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 15px;
+        padding-top: 10px;
+        border-radius: 0 20px 20px 0;
+        background-color: #FFF;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        width: 15px;
+        border-radius: 0 20px 20px 0;
+        background-color: rgb(235, 239, 232);
+    }
+}

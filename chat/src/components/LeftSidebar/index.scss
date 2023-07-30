@@ -1,0 +1,26 @@
+.LeftSidebar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 100%;
+    background-color: rgb(235, 239, 232);
+    border-radius: 20px 0 0 20px;
+    box-sizing: 3;
+
+    .avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 2px solid rgba(120, 173, 73);
+        overflow: hidden;
+        cursor: pointer;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}
