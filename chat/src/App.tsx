@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import Home from "./pages/Home"
 import './App.scss'
 import axios from 'axios'
-import { baseUrl, getTokenUrl } from "./constant"
+import { httpBaseUrl, getTokenUrl } from "./constant"
 
 export default function App() {
 
@@ -17,11 +17,11 @@ export default function App() {
 
     const config = {
       headers: {
-         'Content-Type': 'multipart/form-data;boundary=----WebKitFormBoundaryrJj6yigwBXk1B57Q' 
-        }
+         'Content-Type': 'multipart/form-data', 
+      }
     }
 
-    axios.post(`${baseUrl}${getTokenUrl}`, formData, config)
+    axios.post(`${httpBaseUrl}${getTokenUrl}`, formData, config)
     .then(res=>{
       console.log('res->', res);
     }, err=>{

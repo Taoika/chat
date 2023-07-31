@@ -1,12 +1,22 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './index.scss'
 
-export default function WordInput() {
+type props = {
+    setWordInput: React.Dispatch<React.SetStateAction<string>>,
+}
 
+export default function WordInput(props: props) {
+
+    const { setWordInput } = props;
     const [text, setText] = useState(false); // 是否是文本输入
+    const textRef = useRef<HTMLInputElement>(null);
 
     const handleSwitch = () => {
         setText(!text);
+    }
+
+    const handleSend = () => {
+        textRef && textRef.current ? setWordInput(textRef.current.value) : ''
     }
 
   return (
@@ -23,8 +33,8 @@ export default function WordInput() {
                     </svg>
             }       
         </div>
-        <div className="input"><input type="text" name="wordInput" id="wordInput" /></div>
-        <div className="send">
+        <div className="input"><input type="text" name="wordInput" id="wordInput" ref={textRef}/></div>
+        <div className="send" onClick={handleSend}>
             <svg className="icon" viewBox="0 0 1045 1024" version="1.1" p-id="1044" width="200" height="200">
                 <path d="M989.184 87.530667c30.421333-10.154667 60.736 15.637333 55.594667 47.296l-128 789.333333a42.666667 42.666667 0 0 1-63.082667 30.336l-340.736-192.213333-154.837333 66.282666a42.666667 42.666667 0 0 1-59.349334-36.181333L298.666667 789.269333l0.256-147.733333-277.226667-156.373333c-31.168-17.6-27.882667-62.890667 4.181333-76.394667l3.306667-1.237333z m-39.936 103.232L147.349333 458.069333l215.253334 121.408a42.666667 42.666667 0 0 1 21.546666 33.706667l0.149334 3.541333-0.192 107.882667 114.666666-49.066667a42.666667 42.666667 0 0 1 34.218667 0.277334l3.541333 1.792 305.792 172.501333 106.922667-659.349333z m-127.146667 123.264a42.666667 42.666667 0 0 1-2.858666 57.728l-2.602667 2.346666-256 213.333334a42.666667 42.666667 0 0 1-57.216-63.189334l2.602667-2.346666 256-213.333334a42.666667 42.666667 0 0 1 60.074666 5.461334z" fill="#000000" p-id="1045"></path>
             </svg>

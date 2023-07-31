@@ -12,8 +12,8 @@ export default function Home() {
     <div className='Home'>
         <LeftSidebar/> 
         <div className="rightChat">
-          <Dialogue/>
-          <WordInput/>
+          <Dialogue wordInput={wordInput}/>
+          <WordInput setWordInput={setWordInput}/>
         </div>
     </div>
   )
