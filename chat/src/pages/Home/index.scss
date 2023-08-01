@@ -1,10 +1,10 @@
 .Home {
     display: flex;
-    flex-wrap: wrap;
     width: var(--HomeWidth);
     height: var(--HomeHeight);
     border-radius: 20px;
     box-shadow: 5px 5px 10px 0px rgba(0,0,0,.1);
+    background-color: #fff;
 
     .rightChat {
         position: relative;
