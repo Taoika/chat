@@ -1,20 +1,32 @@
 import './index.scss'
-import avatar from '../../assets/images/avatar.jpg'
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar } from 'antd';
+import { msg } from '../../constant/type';
 
 type props = {
   children: React.ReactNode,
-  ip: string,
+  msg: msg,
 }
 
 export default function OtherSay(props: props) {
 
-  const {children, ip} = props;
+  const {children, msg} = props;
+  const {color, fromUserName} = msg;
 
   return (
-    <div className='OtherSay Say'>
-        <div className="avatar"><img src={avatar} alt="这是你很卡瓦但是没加载出来的头像" /></div>
-        <div className="bubble">{children}</div>
-        <div className="userName">{ip}</div>
+    <div className='Say OtherSay'>
+        <Avatar   
+          className='avatar'
+          style={{
+            margin: '0 16px',
+            backgroundColor: color || 'white',
+          }}
+          shape="square" 
+          size="large" 
+          icon={<UserOutlined />} 
+        />
+        <div className="bubble" style={{'--bubble-background':color || 'green'} as React.CSSProperties}>{children}</div>
+        <div className="userName">{fromUserName}</div>
     </div>
   )
 }

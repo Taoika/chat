@@ -18,18 +18,18 @@ export default function Dialogue(props: props) {
   useEffect(()=>{ // 滚动到最底部
     if(dialogueRef && dialogueRef.current){
       dialogueRef.current.scrollTop = dialogueRef.current.scrollHeight;
-    }
+    }    
   },[msg]);
   
   return (
     <div className='Dialogue' ref={dialogueRef}>
       {
-        msg.map((value, index)=>{
+        msg.map((value)=>{
           if(value.fromUserId === userInfo.userId){
-            return <ISay ip={value.fromUserName} key={`${userInfo.userId}-${value.clientMessageId}`}>{value.message}</ISay>
+            return <ISay key={`${userInfo.userId}-${value.clientMessageId}`} msg={value}>{value.message}</ISay>
           }
           else{
-            return <OtherSay ip={value.fromUserName} key={`${value.fromUserId}-${value.clientMessageId}`}>{value.message}</OtherSay>
+            return <OtherSay key={`${value.fromUserId}-${value.clientMessageId}`} msg={value}>{value.message}</OtherSay>
           }
         })
       }

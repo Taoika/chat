@@ -4,7 +4,7 @@
     height: var(--HomeHeight);
     border-radius: 20px;
     box-shadow: 5px 5px 10px 0px rgba(0,0,0,.1);
-    background-color: #fff;
+    background-color: black;
 
     .rightChat {
         position: relative;
@@ -14,3 +14,11 @@
         height: 100%;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .Home {
+        flex-direction: column;
+        width: var(--MinHomeWidth);
+        height: var(--MinHomeHeight);
+    }
+  }

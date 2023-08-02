@@ -3,18 +3,20 @@ import './index.scss'
 import LeftSidebar from '../../components/LeftSidebar'
 import Dialogue from '../../components/Dialogue'
 import WordInput from '../../components/WordInput'
-import { wsUrl } from '../../constant/constant'
+import { wsUrl, getMsgUrl } from '../../constant/constant'
 import { AppContext } from '../../App'
-import { msg } from '../../constant/type'
+import { msg, msgPullInfo } from '../../constant/type'
+import { reqPost } from '../../utils/request'
 
 const msgId = localStorage.getItem('Chat-msgId');
 
 export default function Home() {
 
-  const { userInfo } = useContext(AppContext)!
+  const { userInfo, error } = useContext(AppContext)!
   const [wordInput, setWordInput] = useState(''); // 文本输入
   const [msg, setMsg] = useState<msg[]>([]); // 双方对话
   const [socket, setSocket] = useState<WebSocket>(); // socket
+  const [msgPullInfo, setMsgPullInfo] = useState<msgPullInfo>({max: 9846573158236160, offset: 0})
   const heartRef = useRef(1); // 心跳的防刷新
   const msgIdRef = useRef(msgId ? parseInt(msgId) : 0); // 客户端信息Id
   const recInterval = useRef(500); // 重连时间间隔
@@ -36,12 +38,31 @@ export default function Home() {
   }
 
   const pullMsg = () => { // 信息拉取
-
+    const data = {
+      max: msgPullInfo.max,
+      offset: msgPullInfo.offset,
+      chatRoomId: 1
+    }
+    const config = { // 请求配置
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`
+      }
+    }
+    reqPost(getMsgUrl, data, config, error, "信息拉取失败").then(
+      res => {
+        console.log('res->', res);
+        setMsgPullInfo({
+          max: res.max,
+          offset: res.offset,
+        })
+        setMsg([...res.resultList.reverse(), ...msg]); // resultList时间顺序从新到旧
+      },
+    )
   }
 
   const wsInit = (socket: WebSocket) => { // WebSocket初始化
 
-    socket.onopen = function(e) { // 连接建立
+    socket.onopen = function() { // 连接建立
       console.log("[open] 连接已建立");
       heartCheck(socket);
       clearTimeout(recTimer);
@@ -52,6 +73,7 @@ export default function Home() {
     socket.onmessage = function(event) { // 接收到服务器的信息
       const data = JSON.parse(event.data)
       const type = data.messageType;
+      console.log(`[message] 有信息来了:`, data);
       switch(type){
         case 0: // 信息成功发送出去了
           console.log('[message] 信息成功发送->', data.clientMessageId);
@@ -64,9 +86,9 @@ export default function Home() {
           break;
         case 6: // 群聊信息
           console.log('[message] 接收到群聊信息:', data);
-          const { chatRoomId, clientMessageId, clientTime, fromUserId, fromUserName, isText, message } = data;
+          const { chatRoomId, clientMessageId, clientTime, fromUserId, fromUserName, isText, message,color } = data;
           // 注意 这里必须使用函数式的更改 这个prev获取到的是闭包外面的当前的msg 而直接获取的msg是当前闭包的msg 是旧的
-          setMsg(prev => [...prev, { chatRoomId, clientMessageId, clientTime, fromUserId, fromUserName, isText, message }]);
+          setMsg(prev => [...prev, { chatRoomId, clientMessageId, clientTime, fromUserId, fromUserName, isText, message,color }]);
           break;
       }
     };
@@ -82,16 +104,16 @@ export default function Home() {
     };
     
     socket.onerror = function(error) { // 连接错误
-      console.log(`[error] ${error}`);
+      console.log("error:",error);
       reconnect();
     };
   }
 
   useEffect(()=>{ // 新建WebSocket 只能初始化一次
-    if(heartRef.current !== 1) return ;
+    if(heartRef.current !== 1 || !userInfo.token) return ; // 等待token
     setSocket(new WebSocket(WS_URL));
     heartRef.current++;
-  },[]);
+  },[userInfo]);
 
   useEffect(()=>{ // websocket初始化
     if(!socket) return;
@@ -106,7 +128,7 @@ export default function Home() {
         "clientMessageId": msgIdRef.current,
         "clientTime": Date.now(),
         "fromUserId": userInfo.userId,
-        "fromUserName": userInfo.ip,
+        "fromUserName": userInfo.name,
         "isText": true,
         "message": wordInput,
         "messageType": 6,
@@ -122,9 +144,10 @@ export default function Home() {
       "clientMessageId": msgIdRef.current,
       "clientTime": Date.now(),
       "fromUserId": userInfo.userId,
-      "fromUserName": userInfo.ip,
+      "fromUserName": userInfo.name,
       "isText": true,
       "message": wordInput,
+      "color": userInfo.color,
     }
     setMsg([...msg, temp_msg]);
     setWordInput(''); // 清空使得相同的信息可以发送

@@ -22,6 +22,9 @@
   --HomeWidth: 990px;
   --HomeHeight: 630px;
   --WordInputHeight: 40px;
+
+  --MinHomeWidth: 375px;
+  --MinHomeHeight: 667px;
 }
 
 @media (prefers-color-scheme: light) {
