@@ -19,9 +19,11 @@
   -webkit-text-size-adjust: 100%;
 
   /* 全局变量 */
-  --HomeWidth: 990px;
+  --HomeWidth: 1300px;
   --HomeHeight: 630px;
   --WordInputHeight: 40px;
+  --LeftSideWidth: 70px;
+  --OnlineWidth: 70px;
 
   --MinHomeWidth: 375px;
   --MinHomeHeight: 667px;

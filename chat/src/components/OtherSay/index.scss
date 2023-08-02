@@ -2,7 +2,7 @@
     justify-content: flex-start;
 
     .avatar {
-        margin-right: 15px;
+        margin: 0 15px;
     }
 
     .bubble {
@@ -10,14 +10,14 @@
         color: rgb(238, 238, 238);
         background: var(--bubble-background);
         border: 2px solid white;
-        &:after {
+        &:before {
             bottom: 0px;
             left: -10px;
         }
     }
 
     .userName {
-        margin-left: 20px;
         text-align: start;
+        margin-left: 15px;
     }
 }

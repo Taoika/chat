@@ -1,10 +1,15 @@
+import { useContext } from 'react'
 import './index.scss'
-import avatar from '../../assets/images/avatar.jpg'
+import { AppContext } from '../../App'
 
 export default function LeftSidebar() {
+  
+  const { userInfo } = useContext(AppContext)!
+  const { icon, color } = userInfo;
+
   return (
     <div className='LeftSidebar'>
-      <div className="avatar"><img src={avatar} alt="这是你卡瓦的头像"/></div>
+      <div className={`iconfont ${icon} avatar`}  style={{backgroundColor: color || 'black'}}/>
     </div>
   )
 }

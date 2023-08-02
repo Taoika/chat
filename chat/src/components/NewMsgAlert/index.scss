@@ -1,0 +1,16 @@
+.NewMsgAlert {
+    position: fixed;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px 10px 5px 14px;
+    border-radius: 10px;
+    color: rgb(190, 190, 190);
+    background-color: rgb(10, 37, 60);
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}

@@ -1,17 +1,18 @@
 export type msg = {
-    "chatRoomId": Number,
-    "clientMessageId": Number,
-    "clientTime": Number,
-    "fromUserId": string,
-    "fromUserName": string,
-    "isText": boolean,
-    "message": string,
-    "color":string
+    chatRoomId: number,
+    clientMessageId: number,
+    clientTime: number,
+    fromUserId: string,
+    fromUserName: string,
+    isText: boolean,
+    message: string,
+    color:string,
+    icon: string,
 }
 
 export type msgPullInfo = {
-  max: Number,
-  offset: Number,
+  max: number,
+  offset: number,
 }
 
 export type userInfo = {
@@ -19,4 +20,14 @@ export type userInfo = {
   userId: string,
   name: string, 
   color:string,
+  icon: string,
+}
+
+export type onlineInfo = {
+  userId: number,
+  username: string,
+  gender: string,
+  color: string,
+  icon: string,
+  online: string,
 }

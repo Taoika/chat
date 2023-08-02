@@ -27,4 +27,24 @@ export const reqPost = (url: string, data: any, config: any, errorFun?: Function
         }
       )
     })
-  };
+};
+
+export const reqGet = (url: string, config: any, errorFun?: Function, errMsg?: string) => {
+  return new Promise<any>((resolve)=>{
+    axios.get(url, config).then(
+      res=>{
+        if(res.data.code === 200){
+          resolve(res.data.data)
+        }
+        else {
+            errorFun ? errorFun(res.data.msg) : ''
+            console.log('请求出错->', errMsg);
+        }
+      },
+      err=>{
+        console.log('err->', err);
+        errorFun ? errorFun(errMsg) : ''
+      }
+    )
+  })
+}

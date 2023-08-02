@@ -10,7 +10,7 @@
         position: relative;
         display: flex;
         justify-content: center;
-        width: calc(var(--HomeWidth) - 70px);
+        width: calc(var(--HomeWidth) - var(--LeftSideWidth) - var(--OnlineWidth));
         height: 100%;
     }
 }

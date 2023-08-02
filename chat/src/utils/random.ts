@@ -22,4 +22,10 @@ export function getRandomName(names:string[]) {
     var blue = Math.floor(Math.random() * 256);
     return "rgb(" + red + "," + green + "," + blue + ")";
   }
+
+  // 生成随机头像
+  export const getRandomIconClass = (iconClasses: string[]) => {
+    const randomIndex = Math.floor(Math.random() * iconClasses.length);
+    return iconClasses[randomIndex];
+  }
   

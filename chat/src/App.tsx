@@ -1,10 +1,10 @@
 import { useEffect, createContext, useState, useRef } from "react"
 import Home from "./pages/Home"
 import './App.scss'
-import { getTokenUrl, names } from "./constant/constant"
+import { getTokenUrl, names, icons } from "./constant/constant"
 import { message } from 'antd'
 import { reqPost } from "./utils/request"
-import { getRandomColor, getRandomName } from "./utils/random"
+import { getRandomColor, getRandomName, getRandomIconClass } from "./utils/random"
 import { userInfo } from "./constant/type"
 
 export const AppContext = createContext<{
@@ -13,13 +13,13 @@ export const AppContext = createContext<{
 } | null>(null)
 
 const local = localStorage.getItem('Chat-User') // 从本地获取用户数据
-const { token, name, userId, color } = local ? JSON.parse(local) : { token: '',  name: '', userId: '',color:'' };
+const { token, name, userId, color, icon } = local ? JSON.parse(local) : { token: '',  name: '', userId: '',color:'', icon: '' };
 
 export default function App() {
 
   const refresh = useRef(1); // 刷新次数 使请求只发一次  
 
-  const [userInfo, setUserInfo] = useState({token, name, userId, color})
+  const [userInfo, setUserInfo] = useState({token, name, userId, color, icon})
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -30,12 +30,12 @@ export default function App() {
     });
   };
 
-  const getToken = (name: string, color: string) => { // 获取token
+  const getToken = (name: string, color: string, icon: string) => { // 获取token
     const formData= new FormData();
     formData.append('client_secret', 'secret');
     formData.append('client_id', 'c1');
     formData.append('grant_type', 'password');
-    formData.append('username', name+';'+color);
+    formData.append('username', `${name};${color};${icon}`);
     formData.append('password', '123456');
     const config = { // 请求配置
       headers: {
@@ -47,7 +47,7 @@ export default function App() {
       res => {
         const token = res.token
         const userId = res.userId;
-        const userInfo = { token, userId, color, name }
+        const userInfo = { token, userId, color, name, icon };
 
         setUserInfo(userInfo)// 存到状态
         localStorage.setItem('Chat-User', JSON.stringify(userInfo)) // 存到本地
@@ -55,14 +55,17 @@ export default function App() {
     )
   }
 
-  useEffect(()=>{ // 获取 name
+  useEffect(()=>{ // 获取 name color 头像
     if(refresh.current !== 1) return; // 刷新不允许进入
     if(userInfo.token && userInfo.name && userInfo.userId&& userInfo.color) return ; // 本地存在用户信息不允许进入
 
     const name = getRandomName(names)
     const color = getRandomColor()
+    const icon = getRandomIconClass(icons);
+
+    console.log(name, color, icon);
     
-    getToken(name,color)
+    getToken(name, color, icon)
     refresh.current++;
   },[]);
 
