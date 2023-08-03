@@ -13,7 +13,7 @@ const msgId = localStorage.getItem('Chat-msgId');
 
 export default function Home() {
 
-  const { userInfo, error } = useContext(AppContext)!
+  const { userInfo, error, playAudio } = useContext(AppContext)!
   const [wordInput, setWordInput] = useState(''); // 文本输入
   const [msg, setMsg] = useState<msg[]>([]); // 双方对话
   const [newMsg, setNewMsg] = useState(0); // 新信息广播
@@ -100,6 +100,7 @@ export default function Home() {
           // 注意 这里必须使用函数式的更改 这个prev获取到的是闭包外面的当前的msg 而直接获取的msg是当前闭包的msg 是旧的
           setMsg(prev => [...prev, { chatRoomId, clientMessageId, clientTime, fromUserId, fromUserName, isText, message, color, icon }]);
           setNewMsg(prev => prev+1);
+          playAudio()
           break;
       }
     };

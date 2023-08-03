@@ -6,10 +6,12 @@ import { message } from 'antd'
 import { reqPost } from "./utils/request"
 import { getRandomColor, getRandomName, getRandomIconClass } from "./utils/random"
 import { userInfo } from "./constant/type"
+import voice from './assets/audio/audio.mp3'
 
 export const AppContext = createContext<{
   userInfo: userInfo,
-  error: (errorMsg: string) => void
+  error: (errorMsg: string) => void,
+  playAudio: ()=>void
 } | null>(null)
 
 const local = localStorage.getItem('Chat-User') // 从本地获取用户数据
@@ -18,7 +20,7 @@ const { token, name, userId, color, icon } = local ? JSON.parse(local) : { token
 export default function App() {
 
   const refresh = useRef(1); // 刷新次数 使请求只发一次  
-
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [userInfo, setUserInfo] = useState({token, name, userId, color, icon})
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -55,6 +57,10 @@ export default function App() {
     )
   }
 
+  const playAudio = () => { // 声音提示
+    audioRef.current && audioRef.current.play();
+  };
+
   useEffect(()=>{ // 获取 name color 头像
     if(refresh.current !== 1) return; // 刷新不允许进入
     if(userInfo.token && userInfo.name && userInfo.userId&& userInfo.color) return ; // 本地存在用户信息不允许进入
@@ -70,10 +76,12 @@ export default function App() {
   },[]);
 
   return (
-    <AppContext.Provider value={{'userInfo': userInfo, 'error': error}}>
+    <AppContext.Provider value={{'userInfo': userInfo, 'error': error, 'playAudio': playAudio}}>
       {contextHolder}
       <div className="App">
         <Home/>
+        <audio ref={audioRef}>
+        <source src={voice} type="audio/mpeg" />您的浏览器不支持 audio 元素!</audio>
       </div>
     </AppContext.Provider>
   )

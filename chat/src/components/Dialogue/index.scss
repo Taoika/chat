@@ -25,3 +25,14 @@
 
     }
 }
+
+@media screen and (max-width: 400px) {
+    .Dialogue {
+        width: 100%;
+        height: 100%;
+
+        &::-webkit-scrollbar-thumb {
+            display: none;
+        }
+    }
+}

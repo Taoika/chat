@@ -23,7 +23,7 @@ export default function OnlineUsers() {
                 setOnlineInfo(res);
             }
         )
-        const onlineTimer = setInterval(()=>{
+        setInterval(()=>{
             reqGet(getOnlineUsersUrl, config, error, '获取在线人数失败').then(
                 res=>{
                     setOnlineInfo(res);

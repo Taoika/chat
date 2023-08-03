@@ -39,3 +39,48 @@
         }
     }
 }
+
+@keyframes OnineAppear {
+    from {
+        width: 44px;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .OnlineUsers {
+        position: absolute;
+        display: flex;
+        top: 0;
+        left: 0;
+        height: var(--Min-LeftSideHeight);
+        border-radius: 0 0 20px 20px;
+        box-sizing: border-box;
+        overflow: hidden;
+        animation: OnineAppear 1s;
+
+        .top {
+            width: 44px;
+            height: var(--Min-LeftSideHeight);
+            padding: 0;
+            border: none;
+            border-right: 1px solid #fff;
+        }
+
+        .onlineUser {
+            width: auto;
+            margin: 0;
+
+            .avatar {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 30px;
+                width: 30px;
+                font-size: 15px;
+            }
+        }
+    }
+}

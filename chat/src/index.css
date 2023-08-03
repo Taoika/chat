@@ -25,8 +25,9 @@
   --LeftSideWidth: 70px;
   --OnlineWidth: 70px;
 
-  --MinHomeWidth: 375px;
-  --MinHomeHeight: 667px;
+  --Min-HomeWidth: 100vw;
+  --Min-HomeHeight: 100vh;
+  --Min-LeftSideHeight: 44px;
 }
 
 @media (prefers-color-scheme: light) {

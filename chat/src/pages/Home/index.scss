@@ -17,8 +17,13 @@
 
 @media screen and (max-width: 600px) {
     .Home {
+        position: relative;
         flex-direction: column;
-        width: var(--MinHomeWidth);
-        height: var(--MinHomeHeight);
+        width: var(--Min-HomeWidth);
+        height: var(--Min-HomeHeight);
+
+        .rightChat {
+            width: 100%;
+        }
     }
-  }
+}

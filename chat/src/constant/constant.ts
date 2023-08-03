@@ -12,16 +12,26 @@ export const wsUrl = `${wsBaseUrl}/ws`; // websocket
 
 // 名字库
 export const names = [
-    "佐藤", "铃木", "高桥", "田中", "渡边", "伊藤", "山本", "中村", "小林", "斋藤",
-    "加藤", "吉田", "山田", "佐々木", "山口", "松元", "井上", "木村", "林", "清水",
-    "山崎", "中岛", "池田", "阿部", "桥本", "山下", "森", "石川", "前田", "小川",
-    "藤田", "冈田", "后藤", "长谷川", "石井", "村上", "近藤", "坂本", "远藤", "青木",
-    "藤井", "西村", "福田", "太田", "三浦", "藤原", "冈本", "松田", "中川", "中野",
-    "原田", "小野", "田村", "竹内", "金子", "和田", "中山", "石田", "上田", "森田",
-    "小岛", "柴田", "原", "宫崎", "酒井", "工藤", "横山", "宫本", "内田", "高木",
-    "安藤", "岛田", "谷口", "大野", "高田", "丸山", "今井", "河野", "藤本", "村田",
-    "武田", "上野", "杉山", "增田", "小山", "大冢", "平野", "菅原", "久保", "松井",
-    "千叶", "岩崎", "樱井", "木下", "野口", "松尾", "菊地", "野村", "新井", "渡部"
+    "佐藤 Sato", "铃木 Suzuki", "高桥 Takahashi", "田中 Tanaka", "渡边 Watanabe",
+    "伊藤 Ito", "山本 Yamamoto", "中村 Nakamura", "小林 Kobayashi", "斋藤 Saito",
+    "加藤 Kato", "吉田 Yoshida", "山田 Yamada", "佐々木 Sasaki", "山口 Yamaguchi",
+    "松元 Matsumoto", "井上 Inoue", "木村 Kimura", "林 Hayashi", "清水 Shimizu",
+    "山崎 Yamazaki", "中岛 Nakajima", "池田 Ikeda", "阿部 Abe", "桥本 Hashimoto",
+    "山下 Yamashita", "森 Mori", "石川 Ishikawa", "前田 Maeda", "小川 Ogawa",
+    "藤田 Fujita", "冈田 Okada", "后藤 Goto", "长谷川 Hasegawa", "石井 Ishii",
+    "村上 Murakami", "近藤 Kondo", "坂本 Sakamoto", "远藤 Endo", "青木 Aoki",
+    "藤井 Fujii", "西村 Nishimura", "福田 Fukuda", "太田 Ota", "三浦 Miura",
+    "藤原 Fujiwara", "冈本 Okamoto", "松田 Matsuda", "中川 Nakagawa", "中野 Nakano",
+    "原田 Harada", "小野 Ono", "田村 Tamura", "竹内 Takeuchi", "金子 Kaneko",
+    "和田 Wada", "中山 Nakayama", "石田 Ishida", "上田 Ueda", "森田 Morita",
+    "小岛 Kohjima", "柴田 Shibata", "原 Hara", "宫崎 Miyazaki", "酒井 Sakai",
+    "工藤 Kudo", "横山 Yokoyama", "宫本 Miyamoto", "内田 Uchida", "高木 Takagi",
+    "安藤 Ando", "岛田 Shimada", "谷口 Taniguchi", "大野 Ono", "高田 Takada",
+    "丸山 Maruyama", "今井 Imai", "河野 Kono", "藤本 Fujimoto", "村田 Murata",
+    "武田 Takeda", "上野 Ueno", "杉山 Sugiyama", "增田 Masuda", "小山 Koyama",
+    "大冢 Otsuka", "平野 Hirano", "菅原 Sugawara", "久保 Kubo", "松井 Matsui",
+    "千叶 Chiba", "岩崎 Iwasaki", "樱井 Sakurai", "木下 Kinoshita", "野口 Noguchi",
+    "松尾 Matsuo", "菊地 Kikuchi", "野村 Nomura", "新井 Arai", "渡部 Watanabe","梦 Yume", "雨 Ame", "辰 Shin", "雪 Yuki", "心 Kokoro", "琴 Koto", "幻 Maboroshi", "璃 Ri", "斯 Shi", "彤 Tom", "竹 Take", "月 Tsuki", "星 Hoshi", "风 Kaze", "山 Yama", "水 Mizu", "花 Hana", "夜 Yoru", "雁 Gan", "晴 Hare", "海 Umi", "石 Ishi", "枫 Kaede", "云 Kumo", "桃 Momo", "露 Tsuyu", "鹿 Shika", "岚 Ran", "兰 Ran", "丹 Tane", "泉 Izumi", "柳 Ryu", "河 Kawa", "松 Matsu", "岩 Iwa", "蓝 Aoi", "青 Ao", "秋 Aki", "莲 Ren", "翠 Midori", "楼 Rou", "绮 Ki", "菡 Hina", "宇 U", "蓉 Yo", "琼 Jin", "叶 You", "曦 Xi", "波 Nami", "珊 Shan", "萍 Ping", "映 Ei", "柔 Yawaraka", "盈 Ying", "薇 Wei", "凝 Ning", "舞 Mai", "忆 Yi"
 ];
 
 // 图标库
