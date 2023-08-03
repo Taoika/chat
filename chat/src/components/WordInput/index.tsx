@@ -1,15 +1,19 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './index.scss'
+import { setSendMsg } from '../../store/slice/websocket'
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 
-type props = {
-    setWordInput: React.Dispatch<React.SetStateAction<string>>,
-}
+const msgId = localStorage.getItem('Chat-msgId');
 
-export default function WordInput(props: props) {
+export default function WordInput() {
 
-    const { setWordInput } = props;
+    const dispatch = useAppDispatch()
+    const { userId, name, color, icon } = useAppSelector((state) => state.userInfo)
+
     const [text, setText] = useState(false); // 是否是文本输入
+    const [wordInput, setWordInput] = useState(''); // 文本输入
     const textRef = useRef<HTMLInputElement>(null);
+    const msgIdRef = useRef(msgId ? parseInt(msgId) : 0); // 客户端信息Id
 
     const handleSwitch = () => { // 文本语音切换
         setText(!text);
@@ -27,6 +31,24 @@ export default function WordInput(props: props) {
             handleSend();
         }
     }
+
+    useEffect(()=>{ // 发送信息到ws处理器
+        if(!wordInput) return ; 
+        const msg = {
+          chatRoomId: 1,
+          clientMessageId: msgIdRef.current,
+          clientTime: Date.now(),
+          fromUserId: userId,
+          fromUserName: name,
+          isText: true,
+          message: wordInput,
+          messageType: 6,
+          icon: icon,
+          color: color,
+        }
+        dispatch(setSendMsg(msg))
+        setWordInput(''); // 及时清空
+      },[wordInput]);
 
   return (
     <div className='WordInput'>

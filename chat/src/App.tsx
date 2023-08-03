@@ -1,28 +1,30 @@
-import { useEffect, createContext, useState, useRef } from "react"
+import { useEffect, createContext, useRef } from "react"
 import Home from "./pages/Home"
 import './App.scss'
 import { getTokenUrl, names, icons } from "./constant/constant"
-import { message } from 'antd'
 import { reqPost } from "./utils/request"
 import { getRandomColor, getRandomName, getRandomIconClass } from "./utils/random"
-import { userInfo } from "./constant/type"
 import voice from './assets/audio/audio.mp3'
+import { message } from 'antd'
+
+import { useAppDispatch } from "./store/hook"
+import { setAllUserInfo } from "./store/slice/userInfo"
 
 export const AppContext = createContext<{
-  userInfo: userInfo,
   error: (errorMsg: string) => void,
   playAudio: ()=>void
 } | null>(null)
 
 const local = localStorage.getItem('Chat-User') // 从本地获取用户数据
-const { token, name, userId, color, icon } = local ? JSON.parse(local) : { token: '',  name: '', userId: '',color:'', icon: '' };
+const userInfo = local ? JSON.parse(local) : { token: '',  name: '', userId: '',color:'', icon: '' };
 
 export default function App() {
 
+  const dispatch = useAppDispatch() // 存到redux
+  dispatch(setAllUserInfo(userInfo));
+
   const refresh = useRef(1); // 刷新次数 使请求只发一次  
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [userInfo, setUserInfo] = useState({token, name, userId, color, icon})
-
   const [messageApi, contextHolder] = message.useMessage();
 
   const error = (errorMsg: string) => { // 错误全局提示
@@ -51,7 +53,8 @@ export default function App() {
         const userId = res.userId;
         const userInfo = { token, userId, color, name, icon };
 
-        setUserInfo(userInfo)// 存到状态
+        dispatch(setAllUserInfo(userInfo)) // 存到redux
+
         localStorage.setItem('Chat-User', JSON.stringify(userInfo)) // 存到本地
       }
     )
@@ -76,7 +79,7 @@ export default function App() {
   },[]);
 
   return (
-    <AppContext.Provider value={{'userInfo': userInfo, 'error': error, 'playAudio': playAudio}}>
+    <AppContext.Provider value={{ 'error': error, 'playAudio': playAudio}}>
       {contextHolder}
       <div className="App">
         <Home/>

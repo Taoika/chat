@@ -21,3 +21,15 @@
         margin-left: 15px;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .OtherSay {
+        .avatar {
+            margin-left: 0;
+        }   
+
+        .userName {
+            margin-left: 0;
+        }
+    }
+}

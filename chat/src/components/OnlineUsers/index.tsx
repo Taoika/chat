@@ -4,18 +4,31 @@ import { reqGet } from '../../utils/request';
 import { getOnlineUsersUrl } from '../../constant/constant';
 import { AppContext } from '../../App';
 import { onlineInfo } from '../../constant/type';
+import { useAppSelector } from "../../store/hook";
 
 export default function OnlineUsers() {
 
-    const { error, userInfo } = useContext(AppContext)!
+    const { token } = useAppSelector((state) => state.userInfo)
+
+    const { error } = useContext(AppContext)!
     const [onlineInfo, setOnlineInfo] = useState<onlineInfo[]>()
+    const [appear, setAppear] = useState(false)
     const refreshRef = useRef(1); // 防刷新
+    const onlineRef = useRef<HTMLDivElement>(null)
+
+    const handleClick = () => { // 在线人数点击事件
+        if(window.innerWidth <= 600){
+            if(!onlineRef.current) return 
+            onlineRef.current.style.opacity = !appear ?  '1' :  '0';
+            setAppear(!appear);
+        }
+    }
 
     useEffect(()=>{ // 定期获取在线用户信息
         if(refreshRef.current !== 1) return 
         const config = { // 请求配置
             headers: {
-              Authorization: `Bearer ${userInfo.token}`
+              Authorization: `Bearer ${token}`
             }
           }
         reqGet(getOnlineUsersUrl, config, error, '获取在线人数失败').then(
@@ -29,20 +42,26 @@ export default function OnlineUsers() {
                     setOnlineInfo(res);
                 }
             )
-          }, 5000);
+          }, 30000);
         refreshRef.current++;
     },[]);
 
   return (
     <div className='OnlineUsers'>
-        <div className="top">{onlineInfo?onlineInfo.length:0}</div>
-        {
-            onlineInfo?.map((value)=>(
-                <div className="onlineUser" style={{'--user-color': value.color || 'black'} as React.CSSProperties} key={value.userId}>
-                    <div className={`iconfont ${value.icon || 'ertong9'} avatar`}/>
-                </div>
-            ))
-        }
+        <div className="top" onClick={handleClick}>{onlineInfo?onlineInfo.length:0}</div>
+        <div className="body" ref={onlineRef}>
+            {
+                onlineInfo?.map((value)=>(
+                    <div 
+                        className='onlineUser'
+                        style={{'--user-color': value.color || 'black'} as React.CSSProperties} 
+                        key={value.userId}
+                    >
+                        <div className={`iconfont ${value.icon || 'ertong9'} avatar`}/>
+                    </div>
+                ))
+            }
+        </div>
     </div>
   )
 }

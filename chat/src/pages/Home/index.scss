@@ -15,15 +15,25 @@
     }
 }
 
+@media screen and (min-width: 600px) and (max-width: 1300px) {
+    .Home {
+        width: var(--Mid-HomeWidth);
+        height: var(--Mid-HomeHeight);
+        border-radius: 0;
+    }
+}
+
 @media screen and (max-width: 600px) {
     .Home {
         position: relative;
         flex-direction: column;
         width: var(--Min-HomeWidth);
         height: var(--Min-HomeHeight);
+        border-radius: 0;
 
         .rightChat {
             width: 100%;
+            height: calc(var(--Min-HomeHeight) - var(--Min-LeftSideHeight));
         }
     }
 }

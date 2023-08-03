@@ -113,8 +113,23 @@
 @media screen and (max-width: 600px) {
     .Say {
         .avatar {
-            width: 20px;
-            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            font-size: 25px;
         }
     }
-  }
+
+    .ISay {
+        .avatar {
+            margin-right: 0;
+        }   
+
+        .userName {
+            margin-right: 0;
+        }
+    }
+}
+

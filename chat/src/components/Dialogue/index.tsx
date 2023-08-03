@@ -1,73 +1,96 @@
-import { useContext, useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useContext } from 'react'
 import './index.scss'
 import OtherSay from '../OtherSay'
 import ISay from '../ISay'
 import NewMsgAlert from '../NewMsgAlert'
-import { msg } from '../../constant/type'
 import { AppContext } from '../../App'
+import { msg, msgPullInfo } from '../../constant/type'
+import { reqPost } from '../../utils/request'
+import { getMsgUrl } from '../../constant/constant'
+import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { setClientMessageId } from '../../store/slice/message'
 
-type props = {
-  msg: msg[],
-  newMsg: {
-    newMsgState: number,
-    setNewMsg: React.Dispatch<React.SetStateAction<number>>,
-  },
-  setScroll: React.Dispatch<React.SetStateAction<number>>,
-}
+export default function Dialogue() {
 
-export default function Dialogue(props: props) {
+  const dispatch = useAppDispatch()
+  const { sendMsg } = useAppSelector((state) => state.webSocket)
+  const { clientMessageId } = useAppSelector((state) => state.message)
+  const { userId, token } = useAppSelector((state) => state.userInfo)
 
-  const { userInfo } = useContext(AppContext)!
-  const { msg, setScroll, newMsg } = props;
-  const { newMsgState, setNewMsg } = newMsg;
+  const { error } = useContext(AppContext)!
+  const [msg, setMsg] = useState<msg[]>([]); // 双方对话
   const dialogueRef = useRef<HTMLDivElement>(null);
   const [display, setDisplay] = useState(false); // 新信息提示的显示
-
-  const handleScroll = (container: HTMLDivElement) => { // 滚动事件处理
-    setScroll(container.scrollTop);
-  }
+  const [msgPullInfo, setMsgPullInfo] = useState<msgPullInfo>({max: 9846573158236160, offset: 0})
 
   const toBottom = () => { // 滚动到最底部
     if(dialogueRef && dialogueRef.current){
       dialogueRef.current.scrollTop = dialogueRef.current.scrollHeight;
       setDisplay(false);
-      setNewMsg(0)
     }
   }
 
-  useEffect(()=>{ // 信息到来   
-    if(newMsgState != 0 && msg[msg.length-1]?.fromUserId === userInfo.userId){ // 自己的新信息
-      toBottom();
-    }    
-    else if(newMsgState != 0) { // 别人的新信息
-      setDisplay(true);
+  const pullMsg = () => { // 信息拉取
+    const data = {
+      max: msgPullInfo.max,
+      offset: msgPullInfo.offset,
+      chatRoomId: 1
     }
-  },[newMsgState, msg]);
+    const config = { // 请求配置
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+    reqPost(getMsgUrl, data, config, error, "信息拉取失败").then(
+      res => {
+        setMsgPullInfo({
+          max: res.max,
+          offset: res.offset,
+        })
+        setMsg([...res.resultList.reverse(), ...msg]); // resultList时间顺序从新到旧
+      },
+    )
+  }
 
-  useEffect(()=>{ // 滚动事件监听
+  useEffect(()=>{ // 信息到来   
+    toBottom();
+  },[msg]);
+
+  useEffect(()=>{ // 滚动事件监听处理
     const dialogue = dialogueRef?.current
     if(!dialogue) return ;
-    
-    dialogue.addEventListener('scroll', ()=>handleScroll(dialogue));
 
+    const handleScroll = (container: HTMLDivElement) => { // 滚动事件处理
+      if(container.scrollTop === 0) {
+        pullMsg();
+      }
+    }
+    dialogue.addEventListener('scroll', ()=>handleScroll(dialogue));
     return () => { // 及时清除滚动事件监听
       dialogue.removeEventListener('scroll', ()=>handleScroll(dialogue));
     }
   },[dialogueRef]);
 
+  useEffect(()=>{ // 自己发送的信息渲染到页面
+    if(!sendMsg) return ;
+    setMsg([...msg, sendMsg]);
+    localStorage.setItem('Chat-msgId', `${clientMessageId+1}`);
+    dispatch(setClientMessageId(clientMessageId+1)) // 只要渲染到页面就应该自增了 不管有没有网络
+  },[sendMsg]);
+
   return (
     <div className='Dialogue' ref={dialogueRef}>
       {
         msg.map((value)=>{
-          if(value.fromUserId === userInfo.userId){
-            return <ISay key={`${userInfo.userId}-${value.clientMessageId}`} msg={value}>{value.message}</ISay>
+          if(value.fromUserId === userId){
+            return <ISay key={`${userId}-${value.clientMessageId}`} msg={value}>{value.message}</ISay>
           }
           else{
             return <OtherSay key={`${value.fromUserId}-${value.clientMessageId}`} msg={value}>{value.message}</OtherSay>
           }
         })
       }
-      <NewMsgAlert onClick={toBottom} display={display} number={newMsgState}/>
+      <NewMsgAlert onClick={toBottom} display={display} number={0}/>
     </div>
   )
 }

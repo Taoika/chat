@@ -1,11 +1,9 @@
-import { useContext } from 'react'
 import './index.scss'
-import { AppContext } from '../../App'
+import { useAppSelector } from "../../store/hook";
 
 export default function LeftSidebar() {
-  
-  const { userInfo } = useContext(AppContext)!
-  const { icon, color } = userInfo;
+
+  const { color, icon } = useAppSelector((state) => state.userInfo)
 
   return (
     <div className='LeftSidebar'>

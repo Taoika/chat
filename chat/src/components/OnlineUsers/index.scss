@@ -15,51 +15,52 @@
         font-weight: 600;
     }
 
-    .onlineUser {
-        --user-color: white; 
-        display: flex;
-        align-items: center;
-        justify-content: start;
-        width: 100%;
-        margin-top: 10px;
-        box-sizing: border-box;
-
-        .avatar {
-            --avatar-height: 40px;
-            width: 40px;
-            height: var(--avatar-height);
-            border: 1px solid #fff;
-            border-radius: 50%;
-            margin: 0 15px;
-            font-size: 20px;
-            text-align: center;
-            line-height: var(--avatar-height);
-            vertical-align: baseline;
-            background-color: var(--user-color);
+    .body {
+        .onlineUser {
+            --user-color: white; 
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            width: 100%;
+            margin-top: 10px;
+            box-sizing: border-box;
+    
+            .avatar {
+                --avatar-height: 40px;
+                width: 40px;
+                height: var(--avatar-height);
+                border: 1px solid #fff;
+                border-radius: 50%;
+                margin: 0 15px;
+                box-sizing: border-box;
+                font-size: 20px;
+                text-align: center;
+                line-height: var(--avatar-height);
+                vertical-align: baseline;
+                background-color: var(--user-color);
+            }
         }
     }
 }
 
-@keyframes OnineAppear {
-    from {
-        width: 44px;
-    }
-    to {
-        width: 100%;
+@media screen and (min-width: 600px) and (max-width: 1300px) {
+    .OnlineUsers {
+        border-radius: 0;
     }
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 600px) {
     .OnlineUsers {
         position: absolute;
         display: flex;
         top: 0;
         left: 0;
         height: var(--Min-LeftSideHeight);
-        border-radius: 0 0 20px 20px;
+        width: 100%;
+        border-radius: 0;
         box-sizing: border-box;
         overflow: hidden;
-        animation: OnineAppear 1s;
+        background-color: transparent;
 
         .top {
             width: 44px;
@@ -69,17 +70,27 @@
             border-right: 1px solid #fff;
         }
 
-        .onlineUser {
-            width: auto;
-            margin: 0;
+        .body {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            background-color: rgb(46, 49, 56);
+            animation-fill-mode: forwards;
+            transition: all 0.5s;
 
-            .avatar {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 30px;
-                width: 30px;
-                font-size: 15px;
+            .onlineUser {
+                margin: 0;
+                overflow: hidden;
+                width: auto;
+    
+                .avatar {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 30px;
+                    width: 30px;
+                    font-size: 15px;
+                }
             }
         }
     }
