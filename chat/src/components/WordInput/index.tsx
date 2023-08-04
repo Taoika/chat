@@ -3,17 +3,15 @@ import './index.scss'
 import { setSendMsg } from '../../store/slice/websocket'
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 
-const msgId = localStorage.getItem('Chat-msgId');
-
 export default function WordInput() {
 
     const dispatch = useAppDispatch()
     const { userId, name, color, icon } = useAppSelector((state) => state.userInfo)
+    const { clientMessageId } = useAppSelector((state) => state.message)
 
     const [text, setText] = useState(false); // 是否是文本输入
     const [wordInput, setWordInput] = useState(''); // 文本输入
     const textRef = useRef<HTMLInputElement>(null);
-    const msgIdRef = useRef(msgId ? parseInt(msgId) : 0); // 客户端信息Id
 
     const handleSwitch = () => { // 文本语音切换
         setText(!text);
@@ -33,10 +31,10 @@ export default function WordInput() {
     }
 
     useEffect(()=>{ // 发送信息到ws处理器
-        if(!wordInput) return ; 
+        if(!wordInput) return ;         
         const msg = {
           chatRoomId: 1,
-          clientMessageId: msgIdRef.current,
+          clientMessageId: clientMessageId,
           clientTime: Date.now(),
           fromUserId: userId,
           fromUserName: name,

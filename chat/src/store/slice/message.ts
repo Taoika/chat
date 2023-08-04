@@ -8,7 +8,7 @@ interface message {
 }
 
 const initialState: message = {
-    clientMessageId: msgId ? parseInt(msgId) : 0
+    clientMessageId: msgId ? parseInt(msgId) : 1
 }
 
 export const messageSlice = createSlice({

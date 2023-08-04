@@ -6,14 +6,14 @@ import { useAppDispatch, useAppSelector } from "../../store/hook";
 export default function SocketService() {
     const dispatch = useAppDispatch()
     const { isConnected, sendMsg } = useAppSelector((state) => state.webSocket)
-    const { token } = useAppSelector((state) => state.userInfo)
+    const { token, userId } = useAppSelector((state) => state.userInfo)
 
     const [socket, setSocket] = useState<WebSocket>(); // socket
     const heartRef = useRef(1); // 心跳的防刷新
     const recInterval = useRef(Math.random() * 1000); // 随机初始重连时间间隔
     let heartTimer = 0; //心跳定时器id
     let recTimer = 0; // 重连定时器id
-    const WS_URL = `${wsUrl}/${token}`; // websocket请求地址
+    const WS_URL = `${wsUrl}/${userId}/${token}`; // websocket请求地址
   
     const heartCheck = (socket: WebSocket) => { // 心跳检查
       heartTimer = setInterval(()=>{ // 建立定时器 只能建立一次 或者是建立了下一个就将上一个销毁
@@ -53,7 +53,7 @@ export default function SocketService() {
             break;
           case 6: // 群聊信息
             console.log('[message] 接收到群聊信息:', data);
-            setReceiveMsg(data);
+            dispatch(setReceiveMsg(data))
             break;
         }
       };
@@ -89,6 +89,8 @@ export default function SocketService() {
   
     useEffect(()=>{ // 发送信息给服务器
       if(!socket || !sendMsg || !isConnected) return ;
+        console.log('sendMsg->', sendMsg);
+      
         socket.send(JSON.stringify(sendMsg));
         dispatch(setSendMsg(null)); // 清空需要发送的信息
     },[sendMsg]);

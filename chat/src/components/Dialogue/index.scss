@@ -22,7 +22,15 @@
     &::-webkit-scrollbar-thumb {
         width: 10px;
         background: rgba(255,255,255,.4);
+    }
 
+    .moreMsg {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: pointer;
+        color: rgb(201, 201, 201);
     }
 }
 
