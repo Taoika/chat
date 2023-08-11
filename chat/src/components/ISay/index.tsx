@@ -1,21 +1,26 @@
 import './index.scss'
 import { msg } from '../../constant/type';
+import AudioPlayer from '../AudioPlayer';
 import '../../assets/font/iconfont.css'
 
+
 type props = {
-  children: React.ReactNode,
   msg: msg,
 }
 
 export default function ISay(props: props) {
 
-  const { children, msg } = props; 
-  const { color, fromUserName, icon } = msg;
+  const { msg } = props; 
+  const { color, fromUserName, icon, messageContentType, data } = msg;
+  const { content } = data;
 
   return (
-    <div className='Say ISay'>
-        <div className="bubble" style={{'--bubble-background': color || 'white'} as React.CSSProperties}>{children}</div>
-        <div className={`iconfont ${icon} avatar`}  style={{backgroundColor: color || 'black'}}/>
+    <div className='Say ISay' style={{'--bubble-background':color || 'black'} as React.CSSProperties}>
+        {
+          messageContentType === 8 ? <div className="bubble">{content}</div> : 
+          messageContentType === 10 ? <AudioPlayer msg={msg}/> : ''
+        }
+        <div className={`iconfont ${icon} avatar`}/>
         <div className="userName">{fromUserName}</div>
     </div>
   )

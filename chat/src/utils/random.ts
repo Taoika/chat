@@ -17,9 +17,9 @@ export function getRandomName(names:string[]) {
   }
   //生成随机颜色
   export function getRandomColor() {
-    var red = Math.floor(Math.random() * 256);
-    var green = Math.floor(Math.random() * 256);
-    var blue = Math.floor(Math.random() * 256);
+    var red = Math.floor(Math.random() * 170);
+    var green = Math.floor(Math.random() * 170);
+    var blue = Math.floor(Math.random() * 170);
     return "rgb(" + red + "," + green + "," + blue + ")";
   }
 

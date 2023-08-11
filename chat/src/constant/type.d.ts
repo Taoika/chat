@@ -5,7 +5,12 @@ export type msg = {
     fromUserId: string,
     fromUserName: string,
     isText: boolean,
-    message: string,
+    data: {
+      content: string, // 内容
+      atUserId?: number[], // @列表
+      duration?: number, // 语音长度
+    }
+    messageContentType: number,
     color:string,
     icon: string,
 }

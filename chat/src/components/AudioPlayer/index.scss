@@ -1,0 +1,11 @@
+.AudioPlayer {
+    cursor: pointer;
+
+    .progress {
+        --progress-color: #fff;
+        --progress_height: 5px;
+        height: var(--progress_height);
+        border-radius: calc(var(--progress_height) / 2);
+        background-image: linear-gradient(90deg, var(--progress-color) 0%, #fff 0%);
+    }
+}

@@ -3,9 +3,9 @@ import type { RootState } from '..'
 import { msg } from '../../constant/type';
 
 interface WebSocketState {
-    isConnected: boolean;
-    receiveMsg: msg | null;
-    sendMsg: msg | null
+    isConnected: boolean; // 连接状态
+    receiveMsg: msg | null; // 收到的信息
+    sendMsg: msg | null; // 发送的信息
 }
 
 const initialState: WebSocketState = {

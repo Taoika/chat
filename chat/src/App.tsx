@@ -1,8 +1,8 @@
-import { useEffect, createContext, useRef } from "react"
+import { useEffect, createContext, useRef, useState } from "react"
 import Home from "./pages/Home"
 import './App.scss'
-import { getTokenUrl, names, icons } from "./constant/constant"
-import { reqPost } from "./utils/request"
+import { names, icons } from "./constant/constant"
+import { reqGetToken } from "./utils/request"
 import { getRandomColor, getRandomName, getRandomIconClass } from "./utils/random"
 import voice from './assets/audio/audio.mp3'
 import { message } from 'antd'
@@ -12,7 +12,7 @@ import { setAllUserInfo } from "./store/slice/userInfo"
 
 export const AppContext = createContext<{
   error: (errorMsg: string) => void,
-  playAudio: ()=>void
+  playAudio: ()=>void,
 } | null>(null)
 
 const local = localStorage.getItem('Chat-User') // 从本地获取用户数据
@@ -35,27 +35,10 @@ export default function App() {
   };
 
   const getToken = (name: string, color: string, icon: string) => { // 获取token
-    const formData= new FormData();
-    formData.append('client_secret', 'secret');
-    formData.append('client_id', 'c1');
-    formData.append('grant_type', 'password');
-    formData.append('username', `${name};${color};${icon}`);
-    formData.append('password', '123456');
-    const config = { // 请求配置
-      headers: {
-        'Content-Type': 'mult nameart/form-data', 
-      }
-    }
-
-    reqPost(`${getTokenUrl}`, formData, config, error, 'token获取失败!').then(
+    reqGetToken(name, color, icon, error).then(
       res => {
-        const token = res.token
-        const userId = res.userId;
-        const userInfo = { token, userId, color, name, icon };
-
-        dispatch(setAllUserInfo(userInfo)) // 存到redux
-
-        localStorage.setItem('Chat-User', JSON.stringify(userInfo)) // 存到本地
+        dispatch(setAllUserInfo(res)) // 存到redux
+        localStorage.setItem('Chat-User', JSON.stringify(res)) // 存到本地
       }
     )
   }
@@ -71,8 +54,6 @@ export default function App() {
     const name = getRandomName(names)
     const color = getRandomColor()
     const icon = getRandomIconClass(icons);
-
-    console.log(name, color, icon);
     
     getToken(name, color, icon)
     refresh.current++;

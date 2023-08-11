@@ -6,6 +6,7 @@ export const getTokenUrl = `${httpBaseUrl}/uaa/oauth/token`; // 获取token
 export const getUserUrl = `${httpBaseUrl}/user/inner/getUserByUsername`; // 获取用户名
 export const getMsgUrl = `${httpBaseUrl}/msg/getMsg`; // 获取历史信息
 export const getOnlineUsersUrl = `${httpBaseUrl}/status/getChatRoomUserStatus/1`; // 获取在线用户信息
+export const fileUploadUrl = `${httpBaseUrl}/file/upload`; // 文件上传
 
 export const wsBaseUrl = `ws://${baseUrl}`
 export const wsUrl = `${wsBaseUrl}/ws`; // websocket

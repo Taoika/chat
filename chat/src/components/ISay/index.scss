@@ -34,6 +34,7 @@
 }
 
 .Say {
+    --bubble-background: rgb(0, 0, 0);
     display: flex;
     align-items: flex-end;
     flex-wrap: wrap;
@@ -52,6 +53,7 @@
         box-sizing: border-box;
         border-radius: 5px;
         color: #e0e0e0;
+        background-color: var(--bubble-background);
     }
 
     .bubble {
@@ -67,12 +69,13 @@
         &:before {
             content: '';
             position: absolute;
+            bottom: -2px;
             width: 0px;
             height: 0px;
-            border-top: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 30px solid var(--bubble-background);
-            border-left: 15px solid transparent;
+            border-top: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid var(--bubble-background);
+            border-left: 10px solid transparent;
             animation: TriangleAppear 0.2s linear;
             transition: 0.2s;
         }
@@ -94,12 +97,10 @@
     }
 
     .bubble {
-        --bubble-background: rgb(0, 0, 0);
         color: rgb(238, 238, 238);
         background: var(--bubble-background);
         border: 2px solid white;
         &:before {
-            bottom: 0px;
             right: -10px;
         }
     }

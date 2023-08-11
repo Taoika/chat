@@ -20,13 +20,9 @@
         width: var(--WordInputHeight);
         border-radius: 50%;
 
-        svg {
-            width: 60%;
-            height: 60%;
-            object-fit: cover;
-            &:hover {
-                cursor: pointer;
-            }
+        .icon {
+            font-size: 20px;
+            cursor: pointer;
         }
     }
 
@@ -47,6 +43,22 @@
             line-height: 100%;
             font-size: 15px;
             font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+        }
+    }
+
+    .speech {
+        width: 89%;
+        font-weight: 600;
+        font-size: 15.5px;
+        color: rgb(0, 0, 0);
+        line-height: var(--WordInputHeight);
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.1s;
+
+        &:hover {
+            font-size: 16px;
+            background-color: #eaeaea;
         }
     }
 }

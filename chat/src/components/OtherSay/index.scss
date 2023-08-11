@@ -6,12 +6,10 @@
     }
 
     .bubble {
-        --bubble-background: rgb(238, 238, 238);
         color: rgb(238, 238, 238);
         background: var(--bubble-background);
         border: 2px solid white;
         &:before {
-            bottom: 0px;
             left: -10px;
         }
     }
