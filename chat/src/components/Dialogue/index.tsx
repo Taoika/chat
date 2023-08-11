@@ -21,7 +21,7 @@ export default function Dialogue() {
   const refreshRef = useRef(1); // 防刷新
   const [msg, setMsg] = useState<msg[]>([]); // 双方对话
   const [newMsgDisplay, setNewMsgDisplay] = useState(false); // 新信息提示的显示
-  const [msgPullInfo, setMsgPullInfo] = useState<msgPullInfo>({max: 9846573158236160, offset: 0}) // 信息拉取偏移
+  const [msgPullInfo, setMsgPullInfo] = useState<msgPullInfo>({max: 9223372036854775807, offset: 0}) // 信息拉取偏移
   const [atBottom, setAtBottom] = useState(true); // 是否在底部
   const [msgType, setMsgType] = useState<'pull' | 'send' | 'receive' | ''>(''); // pull send receive
 

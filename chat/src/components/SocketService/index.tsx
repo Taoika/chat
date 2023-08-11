@@ -59,7 +59,7 @@ export default function SocketService() {
       if(!socket || !isConnected) return ;
       if(clientMessageId > msgAck+1) return ;
       // 清除不需要的缓存 这个迟点清理也不打紧的
-      const needCache = infoCache.filter((msg: msg) => msg.clientMessageId > msgAck+20)
+      const needCache = infoCache.filter((msg: msg) => msg.clientMessageId > msgAck+40 || msg.clientMessageId > msgAck-20)
       setInfoCache(needCache); // 更新状态
       localStorage.setItem('Chat-sendMsg', JSON.stringify(needCache)); // 更新缓存
     },[messageId])
