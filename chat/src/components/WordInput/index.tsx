@@ -4,7 +4,7 @@ import { MessageOutlined, SoundOutlined, RocketOutlined } from '@ant-design/icon
 import { setSendMsg } from '../../store/slice/websocket'
 import { setClientMessageId } from '../../store/slice/message'
 import { useAppDispatch, useAppSelector } from "../../store/hook";
-import useMediaRecorder from '../../hooks/useMediaRecorder'
+import useMediaRecorder from './mediaRecorder'
 import { input } from '../../constant/type'
 
 export default function WordInput() {
