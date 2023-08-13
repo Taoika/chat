@@ -23,13 +23,13 @@ export default function Dialogue() {
   const [newMsgDisplay, setNewMsgDisplay] = useState(false); // 新信息提示的显示
   const [msgPullInfo, setMsgPullInfo] = useState<msgPullInfo>({max: 9223372036854775807, offset: 0}) // 信息拉取偏移
   const [atBottom, setAtBottom] = useState(true); // 是否在底部
-  const [msgType, setMsgType] = useState<'pull' | 'send' | 'receive' | ''>(''); // pull send receive
+  const [msgType, setMsgType] = useState<'pull' | 'send' | 'receive'>('pull'); // pull send receive
 
   const toBottom = () => { // 滚动到最底部
-    if(dialogueRef && dialogueRef.current){
-      dialogueRef.current.scrollTop = dialogueRef.current.scrollHeight;
-      setNewMsgDisplay(false);
-    }
+    const dialogue = dialogueRef.current
+    if(!dialogue) return   
+    dialogue.scrollTop = dialogue.scrollHeight;
+    setNewMsgDisplay(false);
   }
 
   const pullMsg = () => { // 信息拉取
@@ -81,9 +81,6 @@ export default function Dialogue() {
       else {
         setNewMsgDisplay(true);
       }
-    }
-    else if(msgType === 'pull' ){
-
     }
   },[msg]);
 

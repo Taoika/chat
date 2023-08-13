@@ -1,15 +1,16 @@
 import { useState, useEffect, useRef, useContext} from 'react'
-import { wsUrl} from '../../constant/constant'
-import { setReceiveMsg, setConnected, setSendMsg } from '../../store/slice/websocket'
-import { setAllUserInfo } from '../../store/slice/userInfo'
-import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { msg } from '../../constant/type';
-import { reqGetToken } from '../../utils/request';
-import { AppContext } from '../../App';
+import { wsUrl} from '../constant/constant'
+import { setReceiveMsg, setConnected, setSendMsg } from '../store/slice/websocket'
+import { setAllUserInfo } from '../store/slice/userInfo'
+import { useAppDispatch, useAppSelector } from "../store/hook";
+import { msg } from '../constant/type';
+import { reqGetToken } from '../utils/request';
+import { AppContext } from '../App';
 
 const infoCacheString = localStorage.getItem('Chat-sendMsg');
 
-export default function SocketService() {
+// ws处理
+const useSocketService = () => {
 
     const dispatch = useAppDispatch()
     const { isConnected, sendMsg } = useAppSelector((state) => state.webSocket)
@@ -54,8 +55,6 @@ export default function SocketService() {
     },[clientTime, messageId])
 
     useEffect(()=>{ // 缓存清理判断处理
-      console.log(clientMessageId, msgAck);
-      
       if(!socket || !isConnected) return ;
       if(clientMessageId > msgAck+1) return ;
       // 清除不需要的缓存 这个迟点清理也不打紧的
@@ -148,4 +147,6 @@ export default function SocketService() {
     <></>
   )
 }
+
+export default useSocketService;
 

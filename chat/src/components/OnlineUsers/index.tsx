@@ -31,11 +31,13 @@ export default function OnlineUsers() {
               Authorization: `Bearer ${token}`
             }
           }
-          reqGet(getOnlineUsersUrl, config, error, '获取在线人数失败').then(
-            res=>{
-                setOnlineInfo(res);
-            }
-        )
+        setInterval(()=>{
+            reqGet(getOnlineUsersUrl, config, error, '获取在线人数失败').then(
+                res=>{
+                    setOnlineInfo(res);
+                }
+            )
+          }, 660000);
         refreshRef.current++;
     },[token]);
 

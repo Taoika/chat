@@ -4,32 +4,21 @@ import { MessageOutlined, SoundOutlined, RocketOutlined } from '@ant-design/icon
 import { setSendMsg } from '../../store/slice/websocket'
 import { setClientMessageId } from '../../store/slice/message'
 import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { reqPost } from '../../utils/request';
-import { fileUploadUrl } from '../../constant/constant';
-import { AppContext } from '../../App';
-
-type inputType = {
-    data: {
-        content: string,
-        duration?: number,
-    },
-    messageContentType: number,
-}
+import useMediaRecorder from '../../hooks/useMediaRecorder'
+import { input } from '../../constant/type'
 
 export default function WordInput() {
 
     const dispatch = useAppDispatch()
-    const { userId, name, color, icon, token } = useAppSelector((state) => state.userInfo)
+    const { userId, name, color, icon } = useAppSelector((state) => state.userInfo)
     const { clientMessageId } = useAppSelector((state) => state.message)
 
-    const { error } = useContext(AppContext)!
     const [text, setText] = useState(true); // 是否是文本输入
     const [recording, setRecording] = useState(false); // 录音中
-    const [wordInput, setWordInput] = useState<inputType | null>(null); // 输入
+    const [wordInput, setWordInput] = useState<input | null>(null); // 输入
     const textRef = useRef<HTMLInputElement>(null);
-    const stream = useRef<MediaStream>();
-    const recorder = useRef<MediaRecorder>();
-    const mediaBlobs = useRef<Blob[]>([]);
+
+    const { startRecord, stopRecord } = useMediaRecorder(setRecording, setWordInput);
 
     const handleSwitch = () => { // 文本语音切换
         setText(!text);
@@ -53,55 +42,8 @@ export default function WordInput() {
         }
     }
 
-    const startRecord = async() => { // 语音输入开始
-        let startTime = 0;
-        setRecording(true);
+    const handleWordChange = () => { // 文本变化
 
-        mediaBlobs.current = [];
-        stream.current = await navigator.mediaDevices.getUserMedia({ audio: true, video: false }); // 获取音频流
-        recorder.current = new MediaRecorder(stream.current); // 媒体录制器
-
-        recorder.current.onstart = () => { // 录制开始监听
-            startTime = Date.now();
-          }
-
-        recorder.current.ondataavailable = (blobEvent) => { // 数据变化监听
-            mediaBlobs.current.push(blobEvent.data);
-        }
-
-        recorder.current.onstop = () => { // 停止录音监听
-            const duration = (Date.now() - startTime) / 1000;
-
-            const blob = new Blob(mediaBlobs.current, { type: 'audio/wav' })
-            const formData = new FormData();
-            formData.append('file', blob);
-            
-            const config = { // 请求配置
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type': 'multipart/form-data', 
-                }
-            }
-            reqPost(fileUploadUrl, formData, config, error, '语音上传失败').then(
-                res => {
-                    setWordInput({
-                        data: {
-                            content: res,
-                            duration,
-                        },
-                        messageContentType: 10
-                    });
-                }
-            )
-        }
-        
-        recorder.current?.start(); // 开始录音
-    }
-
-    const stopRecord = async() => { // 语音输入结束
-        setRecording(false);
-        recorder.current?.stop()
-        stream.current?.getTracks().forEach((track) => track.stop());
     }
 
     useEffect(()=>{ // 发送信息处理
@@ -136,11 +78,10 @@ export default function WordInput() {
             }       
         </div>
         {
-            text ?
-                <div className="input"><input type="text" name="wordInput" id="wordInput" ref={textRef} onKeyDown={handleKeyDown}/></div> :
-                !recording ? 
-                    <div className="speech" onClick={startRecord}>点击说话</div> : 
-                    <div className="speech" onClick={stopRecord}>结束语音</div>
+            text ? <div className="input"><input type="text" name="wordInput" id="wordInput" ref={textRef} onKeyDown={handleKeyDown} onChange={handleWordChange}/></div> :
+            !recording ? 
+                <div className="speech" onClick={startRecord}>点击说话</div> : 
+                <div className="speech" onClick={stopRecord}>结束语音</div>
         }
         <div className="send" onClick={handleSend}>
             <RocketOutlined className='icon'/>

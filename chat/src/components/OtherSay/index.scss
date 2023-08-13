@@ -9,8 +9,8 @@
         color: rgb(238, 238, 238);
         background: var(--bubble-background);
         border: 2px solid white;
-        &:before {
-            left: -8.5px;
+        &:after {
+            left: -12px;
         }
     }
 
