@@ -44,3 +44,11 @@ export type input = { // 用户输入
   },
   messageContentType: number,
 }
+
+export type chatRoomUserInfo = {
+  userId: number,
+  username: string,
+  color: string,
+  icon: string,
+  online: booloean,
+}

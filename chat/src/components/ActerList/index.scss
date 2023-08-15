@@ -1,0 +1,74 @@
+.ActerList {
+    position: absolute;
+    top: -300px;
+    left: 67px;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px 10px 0 0;
+    background-color: #220303;
+    color: #fff;
+    box-sizing: border-box;
+    overflow-y: auto;
+    transition: all .3s;
+
+    &::-webkit-scrollbar { // 轨道
+        width: 10px;
+        padding-top: 10px;
+        border-radius: 0 10px 0 0;
+    }
+
+    &::-webkit-scrollbar-thumb { // 滑动条
+        width: 10px;
+        background: #600f0f;
+        border-radius: 5px;
+    }
+
+    .Acter_user {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        padding: 10px 15px 10px 15px;
+        transition: all .5s;
+        -webkit-transition: all .5s;
+        background-color: #220303;
+        
+        &:hover {
+            cursor: pointer;
+            background-color: #7f2020;
+            box-shadow: inset 30px 0 0 0  rgba(203, 162, 162, 0.5);
+            z-index: 2;
+        }
+        .avatar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-self: center;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            color: #fff;
+            border-radius: 50%;
+            background-color: #314f6c;
+        }
+
+        .name {
+            align-self: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .selected {
+        cursor: pointer;
+        background-color: #600f0f;
+        box-shadow: inset 30px 0 0 0  rgba(255, 203, 203, 0.5);
+        z-index: 2;
+    }
+}
+
+.hidden {
+    top: 0;
+    width: 0;
+    height: 0;
+    opacity: 0;
+}

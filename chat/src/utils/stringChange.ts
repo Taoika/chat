@@ -32,3 +32,10 @@ export const darkenRgb = (rgbString: string, change: number[]): number[] => {
         return [0,0,0];
     }
 }
+
+/**
+ * 字符串最后一个是否是@
+ * @param string 字符串
+ * @returns true false
+ */
+export const checkLastCharActer = (string: string): boolean => string.charAt(string.length - 1) == '@'

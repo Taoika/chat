@@ -1,0 +1,16 @@
+.Avatar {
+    border-radius: 50%;
+    .avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 2px solid rgb(203, 203, 203);
+        font-size: 40px;
+        color: rgb(203, 203, 203);
+        overflow: hidden;
+        cursor: pointer;
+    }
+}

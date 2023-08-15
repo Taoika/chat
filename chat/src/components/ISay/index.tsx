@@ -3,7 +3,6 @@ import { msg } from '../../constant/type';
 import AudioPlayer from '../AudioPlayer';
 import '../../assets/font/iconfont.css'
 
-
 type props = {
   msg: msg,
 }

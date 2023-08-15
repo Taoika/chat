@@ -38,8 +38,13 @@ export const reqPost = (url: string, data: any, config: any, errorFun?: Function
  * @param errMsg 错误提示信息
  * @returns data的Promise
  */
-export const reqGet = (url: string, config: any, errorFun?: Function, errMsg?: string) => {
+export const reqGet = (url: string, token: string, errorFun?: Function, errMsg?: string) => {
   return new Promise<any>((resolve)=>{
+    const config = { // 请求配置
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
     axios.get(url, config).then(
       res=>{
         if(res.data.code === 200){

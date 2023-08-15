@@ -1,5 +1,6 @@
 import './index.scss'
 import { useAppSelector } from "../../store/hook";
+import Avatar from '../Avatar';
 
 export default function LeftSidebar() {
 
@@ -7,7 +8,7 @@ export default function LeftSidebar() {
 
   return (
     <div className='LeftSidebar'>
-      <div className={`iconfont ${icon} avatar`}  style={{backgroundColor: color || 'black'}}/>
+      <Avatar icon={icon} color={color} type='circle' size='big'/>
     </div>
   )
 }
