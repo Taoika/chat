@@ -13,16 +13,28 @@ jobs:
   
 #关键配置
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.14'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
       - name: pnpm install
-        run: pnpm install
+        run: |
+          cd chat
+          pnpm install
       - name: pnpm run build
-        run: pnpm run build
+        run: |
+          cd chat
+          pnpm run build
       - name: copy file via ssh key
         uses: appleboy/scp-action@master
         with:
-	#需要部署的文件地址
-            source: 'dist/*'
+            source: 'chat/dist/*'
     # SSH address  服务器地址
             host: ${{ secrets.REMOTE_HOST }}
     # Remote dir path  服务器下部署文件存放路径
