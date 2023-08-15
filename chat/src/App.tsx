@@ -22,7 +22,6 @@ export default function App() {
 
   const dispatch = useAppDispatch() // 存到redux
   dispatch(setAllUserInfo(userInfo));
-  console.log('111');
   
 
   const refresh = useRef(1); // 刷新次数 使请求只发一次  
