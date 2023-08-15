@@ -14,6 +14,10 @@ jobs:
 #关键配置
     steps:
       - uses: actions/checkout@v2
+      - name: Set Up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - name: pnpm install
         run: pnpm install
       - name: pnpm run build
