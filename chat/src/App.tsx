@@ -1,4 +1,4 @@
-import { useEffect, createContext, useRef, useState } from "react"
+import { useEffect, createContext, useRef } from "react"
 import Home from "./pages/Home"
 import './App.scss'
 import { names, icons } from "./constant/constant"
