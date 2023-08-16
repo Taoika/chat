@@ -49,8 +49,9 @@ export default function Dialogue() {
         setMsgPullInfo({
           max: res.max,
           offset: res.offset,
-        })        
-        setMsg(prev => [...res.resultList.reverse(), ...prev]); // resultList时间顺序从新到旧
+        })       
+        const list =  res.resultList.reverse(); // 颠倒数组直接放进去set里面好像不行
+        setMsg(prev => [...list, ...prev]); // resultList时间顺序从新到旧?
       },
     )
   }
@@ -82,6 +83,8 @@ export default function Dialogue() {
         setNewMsgDisplay(true);
       }
     }
+    console.log('msg->', msg);
+    
   },[msg]);
 
   useEffect(()=>{ // 滚动事件监听处理
@@ -109,7 +112,7 @@ export default function Dialogue() {
 
   return (
     <div className='Dialogue' ref={dialogueRef}>
-      {
+      {        
         msg.map((value)=>{
           if(value.fromUserId === userId){
             return <ISay key={value.clientMessageId} msg={value}></ISay>

@@ -22,7 +22,6 @@ export default function App() {
 
   const dispatch = useAppDispatch() // 存到redux
   dispatch(setAllUserInfo(userInfo));
-  
 
   const refresh = useRef(1); // 刷新次数 使请求只发一次  
   const audioRef = useRef<HTMLAudioElement | null>(null);
