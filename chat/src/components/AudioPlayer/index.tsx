@@ -75,21 +75,17 @@ export default function AudioPlayer(props: props) {
         const progress = progressRef.current;
         audio.play();
         setPlaying(true);
-        audio.addEventListener('timeupdate', ()=>handleTimeUpdate(audio, progress), false)
-        audio.addEventListener('ended', () => handleEnded(progress), false);
-        progress.addEventListener('mousedown', (event) => handleMouseDown(event, progress, audio), false)
-        progress.addEventListener('mousemove', (event) => handleMouseMove(event, progress, audio), false)
-        window.addEventListener('mouseup', () => handleMoveCancel(), false)
+        audio.ontimeupdate = () => handleTimeUpdate(audio, progress)
+        audio.onended = () => handleEnded(progress);
+        progress.onmousedown = (event) => handleMouseDown(event, progress, audio)
+        progress.onmousemove = (event) => handleMouseMove(event, progress, audio)
+        window.onmouseup = handleMoveCancel
     }
 
     const handleStop = (audio: HTMLAudioElement | null, progress: HTMLDivElement | null) => { // 停止处理
         if(!audio || !progress) return ;
         audio.pause();
         setPlaying(false);
-        audio.removeEventListener('timeupdate', ()=>handleTimeUpdate(audio, progress), false)
-        audio.removeEventListener('ended', () => handleEnded(progress), false);
-        progress.removeEventListener('mousedown', (event) => handleMouseDown(event, progress, audio), false)
-        progress.removeEventListener('mousemove', (event) => handleMouseMove(event, progress, audio), false)
     }
 
     useEffect(()=>{ // 设置进度条颜色

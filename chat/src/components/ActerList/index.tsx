@@ -1,31 +1,67 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import './index.scss'
+import { useAppSelector } from "../../store/hook";
 import { chatRoomUserInfo } from '../../constant/type';
+import { getChatRoomUsersUrl } from '../../constant/constant'
+import { reqGet } from '../../utils/request'
+import { AppContext } from '../../App'
 
 type props = {
     hidden: boolean,
-    chatRoomUser: chatRoomUserInfo[],
-    acterListState: {
-        setActerList: React.Dispatch<React.SetStateAction<chatRoomUserInfo[]>>,
-        acterList: chatRoomUserInfo[],
-    },
+    queryString: string,
+    onPickUser: (user: chatRoomUserInfo) => void,
+    onHide: () => void,
 }
 
 export default function ActerList(props: props) {
-    const { hidden, chatRoomUser, acterListState } = props;
-    const { acterList, setActerList } = acterListState;
+    const { token } = useAppSelector((state) => state.userInfo)
 
+    const { hidden, queryString, onPickUser, onHide } = props;
+
+    const { error } = useContext(AppContext)!
     const [selected, setSelected] = useState(0);
+    const [chatRoomUser, setChatRoomUser] = useState<chatRoomUserInfo[]>([]); // 房间所有用户信息
+    const [searchUsers, setSearchUsers] = useState<chatRoomUserInfo[]>([]); // 符合搜索条件的用户信息
     const listRef = useRef<HTMLUListElement>(null);
+    const refreshRef = useRef(0);
 
     const handleActer = (user: chatRoomUserInfo) => { // 处理@
-        setActerList([...acterList, user])
+        onPickUser(user);
     }
+
+    const searchUser = (queryString?: string) => {
+        return queryString
+          ? chatRoomUser.filter(({ username }) => username.startsWith(queryString))
+          : chatRoomUser.slice(0);
+      };
+
+    useEffect(() => { // 查找词汇改变
+        const filterdUsers = searchUser(queryString);
+        console.log(queryString);
+        
+        setSearchUsers(filterdUsers);
+        if (!filterdUsers.length) {
+          onHide();
+        }
+      }, [queryString]);
+
+    useEffect(()=>{ // 获取群聊用户信息
+        if(refreshRef.current) return ;
+        reqGet(getChatRoomUsersUrl, token, error, '获取群聊用户失败!').then( 
+        res => {
+            const onlineUser = res.filter((user: chatRoomUserInfo) => user.online===true)
+            const offLineUser = res.filter((user: chatRoomUserInfo) => user.online=== false)
+            const acterList = [...onlineUser, ...offLineUser];
+            setChatRoomUser(acterList);
+            setSearchUsers(acterList);
+        }
+    )
+    },[]);
 
     useEffect(()=>{ // selected的改变
         if(!listRef.current || hidden) return ;
         const list = listRef.current.childNodes;
-        list.forEach((value)=>{
+        list.forEach((value)=>{ // 全部移除select类名
             const node = value as HTMLLIElement;
             node.classList.remove('selected');
         })
@@ -34,53 +70,43 @@ export default function ActerList(props: props) {
         node.classList.add('selected');
     },[selected, hidden]);
 
-    useEffect(()=>{ // 按键监听
+    useEffect(()=>{ // 按键监听 因为焦点不在列表上面 所有用全局监听
         if(hidden) return ;
-        const handleKeyDown = (event: KeyboardEvent) => {
+        const handleKeyUp = (event: KeyboardEvent) => { // 按键处理
             switch(event.key){
-                case 'ArrowDown':
-                    console.log('进来');
-                    setSelected(prev=>{
-                        console.log(prev);
-                        return prev+1
-                    });
-                    break;
-                case 'ArrowUp':
-                    console.log('进来');
-                    setSelected(prev=>{
-                        console.log(prev);
-                        return prev==0?0:prev-1});
-                    break;
-                case 'Enter':
+                case 'Escape': // 取消
+                    onHide();break;
+                case 'ArrowDown': // 下箭头
+                    setSelected(prev=>prev+1);break;
+                case 'ArrowUp': // 上箭头
+                    setSelected(prev=>prev==0?0:prev-1);break;
+                case 'Enter': // 输入
                     if(!listRef.current) break;
-                    const list = [...listRef.current.childNodes]; // 不这样展开放进去下面过滤会报错的
-                    const node = list.filter((value: any)=>value.classList.contains('selected'))[0] as HTMLLIElement
-                    const userId = node.getAttribute('user-id')
+                    const list = [...listRef.current.childNodes]; // 用户列表
+                    const node = list.filter((value: any)=>value.classList.contains('selected'))[0] as HTMLLIElement // 当前选择的节点
+                    const userId = node.getAttribute('user-id') // 当前选择的用户id
                     if(!userId) break;
-                    const userInfo = chatRoomUser.filter((value)=>value.userId==parseInt(userId))
-                    setActerList([...acterList, userInfo[0]])
+                    const userInfo = searchUsers.filter((value)=>value.userId==parseInt(userId)) // 获取用户信息
+                    onPickUser(userInfo[0]);
                     break;
             }
         }
-        console.log('添加监听');
-        
-        window.addEventListener('keydown', (event) => handleKeyDown(event));
+        window.addEventListener('keyup', handleKeyUp, true);
         return ()=>{
-            console.log('去除监听');
-            
-            window.removeEventListener('keydown', (event) => handleKeyDown(event));
+            window.removeEventListener('keyup', handleKeyUp, true);
         }
     },[hidden]);
     
   return (
     <ul className={`ActerList ${hidden?'hidden':''}`} ref={listRef}>
         {
-            chatRoomUser.map((value)=>(
+            searchUsers.length ? 
+            searchUsers.map((value)=>(
                 <li className='Acter_user' key={value.userId} user-id={value.userId} onClick={()=>handleActer(value)}>
                     <div className={`iconfont ${value.icon} avatar`} style={{backgroundColor: value.color}}/>
                     <div className="name">{value.username}</div>
                 </li>
-            ))
+            )): '无搜索结果'
         }
     </ul>
   )

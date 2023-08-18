@@ -3,7 +3,7 @@ import LeftSidebar from '../../components/LeftSidebar'
 import Dialogue from '../../components/Dialogue'
 import WordInput from '../../components/WordInput'
 import OnlineUsers from '../../components/OnlineUsers'
-import useSocketService from './socketService'
+import useSocketService from '../../hooks/useSocketService'
 
 export default function Home() {
 

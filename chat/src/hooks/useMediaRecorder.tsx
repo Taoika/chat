@@ -1,9 +1,9 @@
 import { useRef, useContext } from "react";
-import { reqPost } from "../../utils/request";
-import { fileUploadUrl } from "../../constant/constant";
-import { useAppSelector } from "../../store/hook";
-import { AppContext } from '../../App';
-import { input } from '../../constant/type'
+import { reqPost } from "../utils/request";
+import { fileUploadUrl } from "../constant/constant";
+import { useAppSelector } from "../store/hook";
+import { AppContext } from '../App';
+import { input } from '../constant/type'
 
 // 录音
 const useMediaRecorder = (

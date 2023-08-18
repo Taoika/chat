@@ -90,10 +90,7 @@ export default function Dialogue() {
   useEffect(()=>{ // 滚动事件监听处理
     const dialogue = dialogueRef?.current
     if(!dialogue) return ;
-    dialogue.addEventListener('scroll', ()=>handleScroll(dialogue));
-    return () => { // 及时清除滚动事件监听
-      dialogue.removeEventListener('scroll', ()=>handleScroll(dialogue));
-    }
+    dialogue.onscroll = () => handleScroll(dialogue);
   },[dialogueRef]);
 
   useEffect(()=>{ // 自己发送了信息

@@ -41,6 +41,7 @@ export type input = { // 用户输入
   data: {
       content: string,
       duration?: number,
+      atUserId?: number[],
   },
   messageContentType: number,
 }
