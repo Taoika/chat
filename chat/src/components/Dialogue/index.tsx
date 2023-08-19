@@ -83,8 +83,6 @@ export default function Dialogue() {
         setNewMsgDisplay(true);
       }
     }
-    console.log('msg->', msg);
-    
   },[msg]);
 
   useEffect(()=>{ // 滚动事件监听处理

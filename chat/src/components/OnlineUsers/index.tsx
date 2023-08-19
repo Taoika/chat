@@ -26,6 +26,11 @@ export default function OnlineUsers() {
 
     useEffect(()=>{ // 定期获取在线用户信息
         if(refreshRef.current !== 1 || !token) return 
+        reqGet(getOnlineUsersUrl, token, error, '获取在线人数失败').then(
+            res=>{
+                setOnlineInfo(res);
+            }
+        )
         setInterval(()=>{
             reqGet(getOnlineUsersUrl, token, error, '获取在线人数失败').then(
                 res=>{

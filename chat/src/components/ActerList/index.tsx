@@ -29,21 +29,20 @@ export default function ActerList(props: props) {
         onPickUser(user);
     }
 
-    const searchUser = (queryString?: string) => {
+    const searchUser = (queryString?: string) => { // 搜索用户
         return queryString
           ? chatRoomUser.filter(({ username }) => username.startsWith(queryString))
           : chatRoomUser.slice(0);
-      };
+    };
 
     useEffect(() => { // 查找词汇改变
         const filterdUsers = searchUser(queryString);
-        console.log(queryString);
-        
-        setSearchUsers(filterdUsers);
+        setSelected(0); // 重置选择点
+        setSearchUsers(filterdUsers);        
         if (!filterdUsers.length) {
           onHide();
         }
-      }, [queryString]);
+    }, [queryString]);
 
     useEffect(()=>{ // 获取群聊用户信息
         if(refreshRef.current) return ;
@@ -68,7 +67,7 @@ export default function ActerList(props: props) {
         const node = list[selected] as HTMLLIElement;
         if(!node) return ;
         node.classList.add('selected');
-    },[selected, hidden]);
+    },[selected]);
 
     useEffect(()=>{ // 按键监听 因为焦点不在列表上面 所有用全局监听
         if(hidden) return ;

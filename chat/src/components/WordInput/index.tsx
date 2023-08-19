@@ -29,16 +29,24 @@ export default function WordInput() {
     }
 
     const handleSend = () => { // 文本信息发送        
-        if(textRef.current){            
-            setWordInput({
-                data: { 
-                    content: textRef.current.value,
-                    atUserId: acterArr.map(value=>value.userId),
-                }, 
-                messageContentType: 8
-            });
-            textRef.current.value = ''; 
-        }
+        if(!textRef.current) return ;       
+        const content = textRef.current.value
+        const newActerArr = acterArr.filter(value=>{ // 重新筛选@名单
+            const posi = content.indexOf(value.username)
+            if(posi != -1 && content[posi-1] === '@'){ // 用户名存在 且 用户名前面是@
+                return true;
+            }
+            return false;
+        })    
+        setActerArr(newActerArr);  
+        setWordInput({
+            data: { 
+                content,
+                atUserId: newActerArr.map(value=>value.userId),
+            }, 
+            messageContentType: 8
+        });
+        textRef.current.value = ''; 
     }
 
     const handleChange = (event: any) => { // 输入框文本变化  
@@ -70,10 +78,8 @@ export default function WordInput() {
         const input = textRef.current
         if(!input || !input.selectionStart) return ;
         const atPosi = input.value.lastIndexOf('@', input.selectionStart);
-        const preText = input.value.slice(0, atPosi); // @前 不包括@以及模糊搜索部分
-        
+        const preText = input.value.slice(0, atPosi); // @前 不包括@以及用于搜索部分
         const nextText = input.value.slice(input.selectionStart, input.value.length) // @后
-        console.log(preText, nextText);
         const newText = `${preText}@${user.username} ${nextText}`; // 加上@
         input.value = newText;
         setActerArr(prev=>[...prev, user]);
