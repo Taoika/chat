@@ -8,9 +8,6 @@ dependencies:
   '@ant-design/icons':
     specifier: ^5.2.2
     version: 5.2.2(react-dom@18.2.0)(react@18.2.0)
-  '@redux-devtools/extension':
-    specifier: ^3.2.5
-    version: 3.2.5(redux@4.2.1)
   '@reduxjs/toolkit':
     specifier: ^1.9.5
     version: 1.9.5(react-redux@8.1.2)(react@18.2.0)
@@ -780,16 +777,6 @@ packages:
       rc-util: 5.35.0(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  /@redux-devtools/extension@3.2.5(redux@4.2.1):
-    resolution: {integrity: sha512-UhyDF7WmdnCrN1s++YC4sdQCo0z6YUnoB2eCh15nXDDq3QH1jDju1144UNRU6Nvi4inxhaIum4m9BXVYWVC1ng==}
-    peerDependencies:
-      redux: ^3.1.0 || ^4.0.0
-    dependencies:
-      '@babel/runtime': 7.22.6
-      immutable: 4.3.1
-      redux: 4.2.1
     dev: false
 
   /@reduxjs/toolkit@1.9.5(react-redux@8.1.2)(react@18.2.0):
@@ -1674,6 +1661,7 @@ packages:
 
   /immutable@4.3.1:
     resolution: {integrity: sha512-lj9cnmB/kVS0QHsJnYKD1uo3o39nrbKxszjnqS9Fr6NB7bZzW45U6WSGBPKXDL/CvDKqDNPA4r3DoDQ8GTxo2A==}
+    dev: true
 
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
