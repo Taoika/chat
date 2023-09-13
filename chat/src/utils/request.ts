@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getTokenUrl } from "../constant/constant";
+import { getTokenUrl} from "../constant/constant";
 
 /**
  * post请求
@@ -91,7 +91,6 @@ export const reqGetToken = (name: string, color: string, icon: string, errorFun?
         const token = res.token
         const userId = res.userId;
         const userInfo = { token, userId, color, name, icon };
-  
         resolve(userInfo);
       }
     )

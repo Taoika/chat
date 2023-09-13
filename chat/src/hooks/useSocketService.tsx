@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useContext} from 'react'
 import { wsUrl} from '../constant/constant'
-import { setReceiveMsg, setConnected, setSendMsg } from '../store/slice/websocket'
+import { setConnected, setSendMsg } from '../store/slice/websocket'
+import { setChatMsg } from '../store/slice/message'
 import { setAllUserInfo } from '../store/slice/userInfo'
 import { useAppDispatch, useAppSelector } from "../store/hook";
 import { msg } from '../constant/type';
@@ -15,7 +16,7 @@ const useSocketService = () => {
     const dispatch = useAppDispatch()
     const { isConnected, sendMsg } = useAppSelector((state) => state.webSocket)
     const { token, userId, color, name, icon } = useAppSelector((state) => state.userInfo)
-    const { clientMessageId } = useAppSelector((state) => state.message)
+    const { clientMessageId, chatMsg } = useAppSelector((state) => state.message)
 
     const { error } = useContext(AppContext)!
     const [msgAck, setMsgAck] = useState(0); // 最大ack
@@ -86,7 +87,7 @@ const useSocketService = () => {
           case -1: // token过期
             reqGetToken(name, color, icon, error).then(
               res => {
-                dispatch(setAllUserInfo(res)) // 存到redux
+                dispatch(setAllUserInfo(res)) // 用户信息存到redux
                 localStorage.setItem('Chat-User', JSON.stringify(res)) // 存到本地
               }
             )
@@ -111,7 +112,7 @@ const useSocketService = () => {
             break;
           case 6: // 群聊信息
             console.log('[message] 接收到群聊信息:', data);
-            dispatch(setReceiveMsg(data))
+            dispatch(setChatMsg([...chatMsg, data]))
             break;
         }
       } ;

@@ -8,6 +8,7 @@ export const getMsgUrl = `${httpBaseUrl}/msg/getMsg`; // 获取历史信息
 export const getOnlineUsersUrl = `${httpBaseUrl}/status/getChatRoomUserStatus/1`; // 获取在线用户信息
 export const fileUploadUrl = `${httpBaseUrl}/file/upload`; // 文件上传
 export const getChatRoomUsersUrl = `${httpBaseUrl}/chatRoom/list/1`; // 获取群聊用户信息
+export const getActerUrl = `${httpBaseUrl}/msg/1`; // 获取群聊用户信息
 
 export const wsBaseUrl = `ws://${baseUrl}`
 export const wsUrl = `${wsBaseUrl}/ws`; // websocket

@@ -20,7 +20,7 @@ const userInfo = local ? JSON.parse(local) : { token: '',  name: '', userId: '',
 
 export default function App() {
 
-  const dispatch = useAppDispatch() // 存到redux
+  const dispatch = useAppDispatch()
   dispatch(setAllUserInfo(userInfo));
 
   const refresh = useRef(1); // 刷新次数 使请求只发一次  

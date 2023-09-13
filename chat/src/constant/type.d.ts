@@ -1,6 +1,6 @@
-export type msg = { // 信息
+export type msg = { // 发出去的信息
     chatRoomId: number,
-    clientMessageId: number,
+    clientMessageId: number, // 客户端信息id
     clientTime: number,
     fromUserId: string,
     fromUserName: string,
@@ -15,7 +15,13 @@ export type msg = { // 信息
     icon: string,
 }
 
-export type msgPullInfo = { // 拉取信息偏移
+export interface serverMsg extends msg { // 收到的信息
+    messageId?: number, // 服务器信息id
+    messageType?: number,
+	serverTime?: number,
+}
+
+export type msgOffset = { // 拉取信息偏移
   max: number,
   offset: number,
 }
@@ -46,7 +52,7 @@ export type input = { // 用户输入
   messageContentType: number,
 }
 
-export type chatRoomUserInfo = {
+export type chatRoomUserInfo = { // 群聊用户信息
   userId: number,
   username: string,
   color: string,

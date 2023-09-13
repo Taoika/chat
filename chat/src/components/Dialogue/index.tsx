@@ -4,24 +4,23 @@ import OtherSay from '../OtherSay'
 import ISay from '../ISay'
 import NewMsgAlert from '../NewMsgAlert'
 import { AppContext } from '../../App'
-import { msg, msgPullInfo } from '../../constant/type'
-import { reqPost } from '../../utils/request'
-import { getMsgUrl } from '../../constant/constant'
-import { useAppDispatch, useAppSelector } from "../../store/hook";
-import { setReceiveMsg } from '../../store/slice/websocket'
+import { msg, serverMsg } from '../../constant/type'
+import { useAppSelector } from "../../store/hook";
+import useRequest from '../../hooks/useRequest'
+
+// 新增信息的类型
 
 export default function Dialogue() {
 
-  const dispatch = useAppDispatch()
-  const { sendMsg, receiveMsg } = useAppSelector((state) => state.webSocket)
-  const { userId, token } = useAppSelector((state) => state.userInfo)
+  const { reqGetMsg } = useRequest();
+  const { sendMsg } = useAppSelector((state) => state.webSocket)
+  const { userId } = useAppSelector((state) => state.userInfo)
+  const { chatMsg } = useAppSelector((state) => state.message)
 
-  const { error, playAudio } = useContext(AppContext)!
+  const { playAudio } = useContext(AppContext)!
   const dialogueRef = useRef<HTMLDivElement>(null); // 对话框
-  const refreshRef = useRef(1); // 防刷新
-  const [msg, setMsg] = useState<msg[]>([]); // 双方对话
+  const [msg, setMsg] = useState<serverMsg[]>([]); // 双方对话
   const [newMsgDisplay, setNewMsgDisplay] = useState(false); // 新信息提示的显示
-  const [msgPullInfo, setMsgPullInfo] = useState<msgPullInfo>({max: 9223372036854775807, offset: 0}) // 信息拉取偏移
   const [atBottom, setAtBottom] = useState(true); // 是否在底部
   const [msgType, setMsgType] = useState<'pull' | 'send' | 'receive'>('pull'); // pull send receive
 
@@ -32,30 +31,6 @@ export default function Dialogue() {
     setNewMsgDisplay(false);
   }
 
-  const pullMsg = () => { // 信息拉取
-    const data = {
-      max: msgPullInfo.max,
-      offset: msgPullInfo.offset,
-      chatRoomId: 1
-    }
-    const config = { // 请求配置
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-    setMsgType('pull');
-    reqPost(getMsgUrl, data, config, error, "信息拉取失败").then(
-      res => {
-        setMsgPullInfo({
-          max: res.max,
-          offset: res.offset,
-        })       
-        const list =  res.resultList.reverse(); // 颠倒数组直接放进去set里面好像不行
-        setMsg(prev => [...list, ...prev]); // resultList时间顺序从新到旧?
-      },
-    )
-  }
-
   const handleScroll = (container: HTMLDivElement) => { // 滚动事件处理
     if(container.scrollTop + container.clientHeight + 200 >= container.scrollHeight){ // 底部
       setAtBottom(true);
@@ -64,12 +39,6 @@ export default function Dialogue() {
       setAtBottom(false);
     }
   }
-
-  useEffect(()=>{ // 第一次进入
-    if(refreshRef.current !== 1 || !token) return
-      pullMsg();
-      refreshRef.current++;
-  },[]);
 
   useEffect(()=>{ // 新增信息处理      
     if(msgType === 'send'){
@@ -98,26 +67,25 @@ export default function Dialogue() {
   },[sendMsg]);
 
   useEffect(()=>{ // 收到信息
-    if(!receiveMsg) return ;
-    setMsg([...msg, receiveMsg]);
-    dispatch(setReceiveMsg(null)); // 清空
+    if(!chatMsg.length) return ;
+    setMsg(chatMsg);
     setMsgType('receive');
     playAudio();
-  },[receiveMsg]);
+  },[chatMsg]);
 
   return (
     <div className='Dialogue' ref={dialogueRef}>
       {        
         msg.map((value)=>{
           if(value.fromUserId === userId){
-            return <ISay key={value.clientMessageId} msg={value}></ISay>
+            return <ISay key={value.messageId} msg={value}></ISay>
           }
           else{
-            return <OtherSay key={value.clientMessageId} msg={value}></OtherSay>
+            return <OtherSay key={value.messageId} msg={value}></OtherSay>
           }
         })
       }
-      <div className='moreMsg' onClick={pullMsg}>查看更多信息</div>
+      <div className='moreMsg' onClick={reqGetMsg}>查看更多信息</div>
       <NewMsgAlert onClick={toBottom} display={newMsgDisplay} number={0}/>
     </div>
   )
