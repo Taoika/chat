@@ -1,5 +1,5 @@
 // 请求地址
-const baseUrl = '39.98.41.126:31121'
+const baseUrl = '123.207.51.46:10010'
 
 export const httpBaseUrl = `http://${baseUrl}`;
 export const getTokenUrl = `${httpBaseUrl}/uaa/oauth/token`; // 获取token

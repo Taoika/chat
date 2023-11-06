@@ -4,12 +4,11 @@ import OtherSay from '../OtherSay'
 import ISay from '../ISay'
 import NewMsgAlert from '../NewMsgAlert'
 import { AppContext } from '../../App'
-import { msg, serverMsg } from '../../constant/type'
+import { serverMsg } from '../../constant/type'
 import { useAppSelector } from "../../store/hook";
 import useRequest from '../../hooks/useRequest'
 
-// 新增信息的类型
-
+// 新增信息的类型 自己发的信息 一开始收到的群聊信息（包括自己的跟别人的）别人发的信息
 export default function Dialogue() {
 
   const { reqGetMsg } = useRequest();
@@ -69,7 +68,7 @@ export default function Dialogue() {
   useEffect(()=>{ // 收到信息
     if(!chatMsg.length) return ;
     setMsg(chatMsg);
-    setMsgType('receive');
+    setMsgType('receive');  
     playAudio();
   },[chatMsg]);
 
