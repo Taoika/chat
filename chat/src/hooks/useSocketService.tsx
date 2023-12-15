@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../store/hook";
 import { msg } from '../constant/type';
 import { reqGetToken } from '../utils/request';
 import { AppContext } from '../App';
+import {notice} from "../utils/notice";
 
 const infoCacheString = localStorage.getItem('Chat-sendMsg');
 
@@ -114,6 +115,9 @@ const useSocketService = () => {
             console.log('[message] 接收到群聊信息:', data);
             dispatch(setChatMsg([...chatMsg, data]))
             break;
+          case 14:
+              notice(data.fromUserName + "@了你");
+
         }
       } ;
       
