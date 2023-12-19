@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useContext} from 'react'
 import { wsUrl} from '../constant/constant'
 import { setConnected, setSendMsg } from '../store/slice/websocket'
-import { setChatMsg } from '../store/slice/message'
+import { setChatMsg, setNewMsgType } from '../store/slice/message'
 import { setAllUserInfo } from '../store/slice/userInfo'
 import { useAppDispatch, useAppSelector } from "../store/hook";
 import { msg } from '../constant/type';
@@ -120,7 +120,8 @@ const useSocketService = () => {
             console.log(`[message] 心跳回应:`, data);
             break;
           case 6: // 群聊信息
-            console.log('[message] 接收到群聊信息:', data);            
+            console.log('[message] 接收到群聊信息:', data);     
+            dispatch(setNewMsgType('receive'))       
             dispatch(setChatMsg([...chaMsgRef.current, data]))
             break;
           case 14:

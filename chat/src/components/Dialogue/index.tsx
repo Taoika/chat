@@ -5,23 +5,24 @@ import ISay from '../ISay'
 import NewMsgAlert from '../NewMsgAlert'
 import { AppContext } from '../../App'
 import { serverMsg } from '../../constant/type'
-import { useAppSelector } from "../../store/hook";
+import { useAppSelector, useAppDispatch } from "../../store/hook";
+import { setChatMsg, setNewMsgType } from '../../store/slice/message'
 import useRequest from '../../hooks/useRequest'
 
 // 新增信息的类型 自己发的信息 一开始收到的群聊信息（包括自己的跟别人的）别人发的信息
 export default function Dialogue() {
 
   const { reqGetMsg } = useRequest();
+  const dispatch = useAppDispatch()
   const { sendMsg } = useAppSelector((state) => state.webSocket)
   const { userId } = useAppSelector((state) => state.userInfo)
-  const { chatMsg } = useAppSelector((state) => state.message)
+  const { chatMsg, newMsgType } = useAppSelector((state) => state.message)
 
   const { playAudio } = useContext(AppContext)!
   const dialogueRef = useRef<HTMLDivElement>(null); // 对话框
   const [msg, setMsg] = useState<serverMsg[]>([]); // 双方对话
   const [newMsgDisplay, setNewMsgDisplay] = useState(false); // 新信息提示的显示
   const [atBottom, setAtBottom] = useState(true); // 是否在底部
-  const [msgType, setMsgType] = useState<'pull' | 'send' | 'receive'>('pull'); // pull send receive
 
   const toBottom = () => { // 滚动到最底部
     const dialogue = dialogueRef.current
@@ -40,10 +41,10 @@ export default function Dialogue() {
   }
 
   useEffect(()=>{ // 新增信息处理      
-    if(msgType === 'send'){
+    if(newMsgType === 'send'){
       toBottom()
     }
-    else if(msgType === 'receive'){
+    else {
       if(atBottom){
         toBottom()
       }
@@ -61,14 +62,13 @@ export default function Dialogue() {
 
   useEffect(()=>{ // 自己发送了信息
     if(!sendMsg) return ;
-    setMsg([...msg, sendMsg]);
-    setMsgType('send');
+    dispatch(setChatMsg([...msg, sendMsg]));
+    dispatch(setNewMsgType('send'));
   },[sendMsg]);
 
-  useEffect(()=>{ // 收到信息
+  useEffect(()=>{ // 群聊信息变更
     if(!chatMsg.length) return ;
     setMsg(chatMsg);
-    setMsgType('receive');  
     playAudio();
   },[chatMsg]);
 
