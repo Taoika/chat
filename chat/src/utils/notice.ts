@@ -5,13 +5,12 @@ import type { NotificationPlacement } from 'antd/es/notification/interface';
 export const notice = (msg: string) => {
   const openNotification = (placement: NotificationPlacement, msg: string) => {
     notification.info({
-      message: msg,
+      message: '提醒',
+      description: msg,
       placement,
-
       style: {
         width: 300,
       },
-
     });
   };
   
