@@ -69,7 +69,9 @@ export default function Dialogue() {
   useEffect(()=>{ // 群聊信息变更
     if(!chatMsg.length) return ;
     setMsg(chatMsg);
-    playAudio();
+    if(newMsgType == 'receive') {
+      playAudio();
+    }
   },[chatMsg]);
 
   return (
