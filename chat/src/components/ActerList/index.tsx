@@ -28,7 +28,6 @@ export default function ActerList(props: props) {
     const [chatRoomUser, setChatRoomUser] = useState<chatRoomUserInfo[]>([]); // 房间所有用户信息
     const [searchUsers, setSearchUsers] = useState<chatRoomUserInfo[]>([]); // 符合搜索条件的用户信息
     const listRef = useRef<HTMLUListElement>(null);
-    // const refreshRef = useRef(0);
 
     const handleActer = (user: chatRoomUserInfo) => { // 处理@
         onPickUser(user);
@@ -58,7 +57,7 @@ export default function ActerList(props: props) {
     }, [queryString]);
 
     useEffect(()=>{ // 获取群聊用户信息
-        // if(refreshRef.current) return ;
+        if(!token) return ;
         reqGet(getChatRoomUsersUrl, token, error, '获取群聊用户失败!').then( 
         res => {
             const onlineUser = res.filter((user: chatRoomUserInfo) => user.online===true)
@@ -95,12 +94,9 @@ export default function ActerList(props: props) {
                     setSelected(prev=>prev==0?0:prev-1);break;
                 case 'Enter': // 输入
                     if(!listRef.current) break;
-                    // eslint-disable-next-line no-case-declarations
                     const node = getSelected(listRef.current);
-                    // eslint-disable-next-line no-case-declarations
                     const userId = node.getAttribute('user-id') // 当前选择的用户id
                     if(!userId) break;
-                    // eslint-disable-next-line no-case-declarations
                     const userInfo = searchUsers.filter((value)=>value.userId==parseInt(userId)) // 获取用户信息
                     onPickUser(userInfo[0]);
                     break;

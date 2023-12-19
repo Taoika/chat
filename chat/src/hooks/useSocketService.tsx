@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../store/hook";
 import { msg } from '../constant/type';
 import { reqGetToken } from '../utils/request';
 import { AppContext } from '../App';
-import {notice} from "../utils/notice";
+import { notice } from "../utils/notice";
 
 const infoCacheString = localStorage.getItem('Chat-sendMsg');
 
@@ -45,6 +45,7 @@ const useSocketService = () => {
     }  
 
     const sendMsgtoServer = (socket: WebSocket, message: string) => { // 发送信息 设置定时器
+      if(!message) return;
       socket.send(message);
     }
 

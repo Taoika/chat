@@ -37,7 +37,6 @@ export default function Dialogue() {
     else if(container.scrollTop >= 1000) { // 中间
       setAtBottom(false);
     }
-    // else if (conta run
   }
 
   useEffect(()=>{ // 新增信息处理      

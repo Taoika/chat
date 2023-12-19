@@ -18,13 +18,13 @@ export const reqPost = (url: string, data: any, config: any, errorFun?: Function
                 resolve(res.data.data)
             }
             else {
-                // errorFun ? errorFun(errMsg) : ''
+                errorFun ? errorFun(errMsg) : ''
                 console.log('请求出错->', res.data.msg);
             }
         },
         err=>{
             console.log('err->', err);
-            // errorFun ? errorFun(errMsg) : ''
+            errorFun ? errorFun(errMsg) : ''
         }
       )
     })
@@ -38,7 +38,6 @@ export const reqPost = (url: string, data: any, config: any, errorFun?: Function
  * @param errMsg 错误提示信息
  * @returns data的Promise
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const reqGet = (url: string, token: string, errorFun?: Function, errMsg?: string) => {
   return new Promise<any>((resolve)=>{
     const config = { // 请求配置
@@ -52,15 +51,13 @@ export const reqGet = (url: string, token: string, errorFun?: Function, errMsg?:
           resolve(res.data.data)
         }
         else {
-            // errorFun ? errorFun(errMsg) : ''
-            errorFun ? "" : ''
+            errorFun ? errorFun(errMsg) : ''
             console.log('请求出错->', res.data.msg);
         }
       },
       err=>{
         console.log('err->', err);
-        // errorFun ? errorFun(errMsg) : ''
-          errorFun ? "" : ''
+        errorFun ? errorFun(errMsg) : ''
         console.log(errMsg)
       }
     )
@@ -75,7 +72,6 @@ export const reqGet = (url: string, token: string, errorFun?: Function, errMsg?:
  * @param errorFun 错误处理
  * @returns userInfo 用户信息
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const reqGetToken = (name: string, color: string, icon: string, errorFun?: Function) => {
   return new Promise<any>(resolve=>{
 

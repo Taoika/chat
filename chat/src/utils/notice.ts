@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import type { NotificationPlacement } from 'antd/es/notification/interface';
 
+// 信息提示
 export const notice = (msg: string) => {
   const openNotification = (placement: NotificationPlacement, msg: string) => {
     notification.info({
@@ -9,9 +10,6 @@ export const notice = (msg: string) => {
 
       style: {
         width: 300,
-        // backgroundColor: "#333", // 设置背景颜色
-         // 设置字体颜色
-        // 在这里添加其他样式属性
       },
 
     });
