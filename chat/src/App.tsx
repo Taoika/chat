@@ -1,5 +1,6 @@
 import { useEffect, createContext, useRef } from "react"
 import Home from "./pages/Home"
+import AdCol from "./components/AdCol"
 import './App.scss'
 import { names, icons } from "./constant/constant"
 import { reqGetToken } from "./utils/request"
@@ -62,13 +63,8 @@ export default function App() {
   return (
       <AppContext.Provider value={{'error': error, 'playAudio': playAudio}}>
         {contextHolder}
-        <a href="https://qgailab.com/vi/" target="_blank" rel="noopener noreferrer" style={{textDecoration: 'none', color: 'inherit'}}>
-          <div style={{display: 'flex', alignItems: 'center'}}>
-            <img src="https://pic-1316520471.cos.ap-guangzhou.myqcloud.com/vsicon.png" alt="icon" style={{ width: '80px', height: '100px', marginRight: '40px' }}/>
-            <span>点击跳转虚拟互动直播间！快邀请好友来同屏体验吧！</span>
-          </div>
-        </a>
         <div className="App">
+          <AdCol/>
           <Home/>
           <audio ref={audioRef}>
             <source src={voice} type="audio/mpeg"/>
