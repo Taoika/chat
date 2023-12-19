@@ -37,7 +37,7 @@ export default function OnlineUsers() {
                     setOnlineInfo(res);
                 }
             )
-          }, 660000);
+          }, 5000);
         refreshRef.current++;
     },[token]);
 

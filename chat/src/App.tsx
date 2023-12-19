@@ -1,5 +1,6 @@
 import { useEffect, createContext, useRef } from "react"
 import Home from "./pages/Home"
+import AdCol from "./components/AdCol"
 import './App.scss'
 import { names, icons } from "./constant/constant"
 import { reqGetToken } from "./utils/request"
@@ -34,8 +35,8 @@ export default function App() {
     });
   };
 
-  const getToken = (name: string, color: string, icon: string) => { // 获取token
-    reqGetToken(name, color, icon, error).then(
+  const getToken = async (name: string, color: string, icon: string) => { // 获取token
+    await reqGetToken(name, color, icon, error).then(
       res => {
         dispatch(setAllUserInfo(res)) // 存到redux
         localStorage.setItem('Chat-User', JSON.stringify(res)) // 存到本地
@@ -60,13 +61,16 @@ export default function App() {
   },[]);
 
   return (
-    <AppContext.Provider value={{ 'error': error, 'playAudio': playAudio}}>
-      {contextHolder}
-      <div className="App">
-        <Home/>
-        <audio ref={audioRef}>
-        <source src={voice} type="audio/mpeg" />您的浏览器不支持 audio 元素!</audio>
-      </div>
-    </AppContext.Provider>
+      <AppContext.Provider value={{'error': error, 'playAudio': playAudio}}>
+        {contextHolder}
+        <div className="App">
+          <AdCol/>
+          <Home/>
+          <audio ref={audioRef}>
+            <source src={voice} type="audio/mpeg"/>
+            您的浏览器不支持 audio 元素!
+          </audio>
+        </div>
+      </AppContext.Provider>
   )
 }

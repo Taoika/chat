@@ -58,6 +58,7 @@ export const reqGet = (url: string, token: string, errorFun?: Function, errMsg?:
       err=>{
         console.log('err->', err);
         errorFun ? errorFun(errMsg) : ''
+        console.log(errMsg)
       }
     )
   })

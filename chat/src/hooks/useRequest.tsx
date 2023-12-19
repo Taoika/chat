@@ -17,7 +17,7 @@ const useRequest = () => { // 请求hook
 			max: msgOffset.max,
 			offset: msgOffset.offset,
 			chatRoomId: 1
-		  }
+		}
 		const config = { // 请求配置
 			headers: {
 				Authorization: `Bearer ${token}`

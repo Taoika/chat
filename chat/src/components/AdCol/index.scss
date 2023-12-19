@@ -1,0 +1,46 @@
+.AdCol {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    grid-template-rows: 100%;
+    width: 100%;
+    background-color: #fff;
+    color: black;
+    transition-duration: .3s;
+    cursor: pointer;
+    z-index: 3;
+
+    .AdLeft {
+        display: flex;
+        align-items: center;
+        img {
+            height: 100%;
+            margin-right: 20px;
+        }
+    
+        span {
+            width: 80%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .closeBtn {
+        position: absolute;
+        right: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 100%;
+        transition-duration: .3s;
+
+        &:hover {
+            background-color: #ffcaca;
+            width: 100px;
+        }
+    }
+}
