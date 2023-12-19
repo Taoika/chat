@@ -44,7 +44,7 @@ export default function App() {
   }
 
   const playAudio = () => { // 声音提示
-    audioRef.current && audioRef.current.play();
+    audioRef.current?.play();
   };
 
   useEffect(()=>{ // 获取 name color 头像

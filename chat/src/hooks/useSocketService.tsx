@@ -24,8 +24,11 @@ const useSocketService = () => {
     const [clientTime, setClientTime] = useState(0); // 客户端时间 用于标识回应ack
     const [infoCache, setInfoCache] = useState(infoCacheString ? JSON.parse(infoCacheString) : [])
     const [socket, setSocket] = useState<WebSocket>(); // socket
+
     const heartRef = useRef(1); // 心跳的防刷新
     const recInterval = useRef(Math.random() * 1000); // 随机初始重连时间间隔
+    const chaMsgRef = useRef(chatMsg)
+
     let heartTimer = 0; //心跳定时器id
     let recTimer = 0; // 重连定时器id
     const WS_URL = `${wsUrl}/${userId}/${token}`; // websocket请求地址
@@ -69,6 +72,10 @@ const useSocketService = () => {
       setSocket(new WebSocket(WS_URL));
       heartRef.current++;
     },[token]);
+
+    useEffect(()=>{ // chatMsg更新 为了在监听事件里面能获取到最新的
+      chaMsgRef.current = chatMsg
+    },[chatMsg]);
   
     useEffect(()=>{ // websocket初始化
       if(!socket) return;
@@ -111,8 +118,8 @@ const useSocketService = () => {
             console.log(`[message] 心跳回应:`, data);
             break;
           case 6: // 群聊信息
-            console.log('[message] 接收到群聊信息:', data);
-            dispatch(setChatMsg([...chatMsg, data]))
+            console.log('[message] 接收到群聊信息:', data);            
+            dispatch(setChatMsg([...chaMsgRef.current, data]))
             break;
         }
       } ;
