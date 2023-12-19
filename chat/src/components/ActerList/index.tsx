@@ -59,13 +59,13 @@ export default function ActerList(props: props) {
     useEffect(()=>{ // 获取群聊用户信息
         if(!token) return ;
         reqGet(getChatRoomUsersUrl, token, error, '获取群聊用户失败!').then( 
-        res => {
-            const onlineUser = res.filter((user: chatRoomUserInfo) => user.online===true)
-            const offLineUser = res.filter((user: chatRoomUserInfo) => user.online=== false)
-            const acterList = [...onlineUser, ...offLineUser];
-            setChatRoomUser(acterList);
-            setSearchUsers(acterList);
-        }
+            res => {
+                const onlineUser = res.filter((user: chatRoomUserInfo) => user.online===true)
+                const offLineUser = res.filter((user: chatRoomUserInfo) => user.online=== false)
+                const acterList = [...onlineUser, ...offLineUser];
+                setChatRoomUser(acterList);
+                setSearchUsers(acterList);
+            }
     )
     },[token]);
 
